@@ -1,0 +1,88 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.header-cl {
+    background: #8c56c5;
+    background: -moz-linear-gradient(top, #8c56c5 0%, #cc7edd 50%, #fec7ff 100%);
+    background: -webkit-linear-gradient(top, #8c56c5 0%, #cc7edd 50%, #fec7ff 100%);
+    background: linear-gradient(to bottom, #8c56c5 0%, #cc7edd 50%, #fec7ff 100%);
+}
+
+.img-logo {
+    width: 150px;
+    object-fit: cover;
+}
+.header {
+    margin: 0;
+}
+
+.my-header {
+    position: fixed;
+    width: 100%;
+    height: 80px;
+    margin: 0px;
+    background-color: rgb(52, 58, 64, 0);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.375);
+    transition: background-color 0.5s, color 0.5s, height 0.5s;
+    backdrop-filter: blur(0px);
+    border-width: 0px;
+    z-index: 1;
+}
+
+body {
+    margin: 0;
+}
+
+
+
+.my-logo {
+    width: 100%;
+    object-fit: contain;
+    height: 100%;
+}
+
+.my-footer-logo {
+    max-width: 100%;
+    height: auto;
+    width: 150px;
+}
+
+.footer {
+    padding: 20px 0 0 5px;
+    margin: 0;
+}
+
+.my-fb:hover {
+    color: rgb(0, 38, 255);
+}
+
+.my-yt:hover {
+    color: red;
+}
+
+.my-tt:hover {
+    color: rgb(0, 140, 255);
+}
+
+.my-tw:hover {
+    color: rgb(134, 34, 248);
+}
