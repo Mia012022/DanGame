@@ -1,176 +1,182 @@
 ﻿
 @{
-    ViewData["Title"] = "Artical";
+	ViewData["Title"] = "Artical";
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <script src="https://kit.fontawesome.com/b5dde33e16.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="~/css/artical.css" asp-append-version="true" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
 <style>
-    img {
-        width: 100%;
-    }
+	img {
+		width: 100%;
+	}
 
-    a {
-        text-decoration: none;
-    }
+	a {
+		text-decoration: none;
+	}
+	.{
+		box-sizing:border-box;
+	}
 </style>
 
 <body>
-    <div class="d-flex  m-auto">
-        <div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
-            <div class="m-4 ">
-                <h3>【情報】網頁活動「碎片拾憶」(40原石)</h3>
-                <hr>
-                <!-- user -->
-                <div class="d-flex mb-3">
-                    <div>
-                        <img class="rounded-circle" style="width: 50px;"
-                             src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/d6048f30e1ec7c52013ad5ed41500099_293482052564117040.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
-                        </img>
-                    </div>
-                    <div class="ms-1">
-                        <span class="text-primary ">坂坂悠</span>
-                        <p class="text-secondary " style="font-size: x-small;">2024-05-07 19:10:28</p>
-                    </div>
-                </div>
+	<div class="d-flex  m-auto">
+		<div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
+			<div class="m-4 ">
+				<h3>【情報】網頁活動「碎片拾憶」(40原石)</h3>
+				<hr>
+				<!-- user -->
+				<div class="d-flex mb-3">
+					<div>
+						<img class="rounded-circle" style="width: 50px;"
+							 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/d6048f30e1ec7c52013ad5ed41500099_293482052564117040.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
+						</img>
+					</div>
+					<div class="ms-1">
+						<span class="text-primary ">坂坂悠</span>
+						<p class="text-secondary " style="font-size: x-small;">2024-05-07 19:10:28</p>
+					</div>
+				</div>
 
-                <figure>
-                    <img src="https://upload-os-bbs.hoyolab.com/upload/2024/04/30/6729e8f3a5c9291c41a558149aedf71b_927294122593169208.jpg"
-                         alt="">
-                    <figcaption class="text-center">過往的記憶如同拼圖通常…將它們拼湊在一起，便能勾勒出我們走過的路。</figcaption>
-                </figure>
-                <a href="https://act.hoyoverse.com/ys/event/e20240506jigsaw-ih4e10/index.html?game_biz=hk4e_global&hyl_presentation_style=fullscreen&hyl_auth_required=true&hyl_landscape=true&hyl_hide_status_bar=true&utm_source=hoyolab&utm_medium=post">
-                    <p class="text-center">--點擊參與活動-- </p>
-                </a>
-                <p>
-                    〓活動時間〓
-                    2024年5月7日-2024年5月26日11:59（UTC+8）<br><br>
+				<figure>
+					<img src="https://upload-os-bbs.hoyolab.com/upload/2024/04/30/6729e8f3a5c9291c41a558149aedf71b_927294122593169208.jpg"
+						 alt="">
+					<figcaption class="text-center">過往的記憶如同拼圖通常…將它們拼湊在一起，便能勾勒出我們走過的路。</figcaption>
+				</figure>
+				<a href="https://act.hoyoverse.com/ys/event/e20240506jigsaw-ih4e10/index.html?game_biz=hk4e_global&hyl_presentation_style=fullscreen&hyl_auth_required=true&hyl_landscape=true&hyl_hide_status_bar=true&utm_source=hoyolab&utm_medium=post">
+					<p class="text-center">--點擊參與活動-- </p>
+				</a>
+				<p>
+					〓活動時間〓
+					2024年5月7日-2024年5月26日11:59（UTC+8）<br><br>
 
-                    *活動結束後便無法領取獎勵，請及時領取*<br><br>
+					*活動結束後便無法領取獎勵，請及時領取*<br><br>
 
-                    〓參與條件〓<br>
-                    冒險等階≥10級<br><br>
+					〓參與條件〓<br>
+					冒險等階≥10級<br><br>
 
-                    〓活動獎勵〓<br>
-                    ●完成拼圖關卡，累計可領取共計40原石獎勵。<br>
-                    ●首次分享活動，可領取20,000摩拉獎勵。<br>
-                    ●完成有獎召回，邀請者可額外獲得60原石獎勵。<br><br>
+					〓活動獎勵〓<br>
+					●完成拼圖關卡，累計可領取共計40原石獎勵。<br>
+					●首次分享活動，可領取20,000摩拉獎勵。<br>
+					●完成有獎召回，邀請者可額外獲得60原石獎勵。<br><br>
 
-                    *活動結束後將無法遊玩關卡或兌換拼圖碎片，請旅行者及時參與。<br><br>
+					*活動結束後將無法遊玩關卡或兌換拼圖碎片，請旅行者及時參與。<br><br>
 
-                    〓活動玩法說明〓<br>
-                    1.活動期間，旅行者可以透過每日登入《原神》、消耗原萃樹脂、完成秘境等挑戰任務獲得拼圖碎片。<br><br>
+					〓活動玩法說明〓<br>
+					1.活動期間，旅行者可以透過每日登入《原神》、消耗原萃樹脂、完成秘境等挑戰任務獲得拼圖碎片。<br><br>
 
-                    2.拼圖碎片可幫助旅行者獲得完整的卡片並進入下一個拼圖關卡。<br><br>
+					2.拼圖碎片可幫助旅行者獲得完整的卡片並進入下一個拼圖關卡。<br><br>
 
-                    3.活動期間，旅行者可透過卡片及卡片上的召回碼邀請回歸旅行者。回歸旅行者在網頁中完成綁定後，被綁定的旅行者可獲得拼圖碎片獎勵。<br><br>
+					3.活動期間，旅行者可透過卡片及卡片上的召回碼邀請回歸旅行者。回歸旅行者在網頁中完成綁定後，被綁定的旅行者可獲得拼圖碎片獎勵。<br><br>
 
-                    4.被邀請的旅行者完成網頁活躍任務，邀請者可獲得額外原石獎勵。<br><br>
+					4.被邀請的旅行者完成網頁活躍任務，邀請者可獲得額外原石獎勵。<br><br>
 
-                    〓回歸旅行者定義〓<br>
-                    冒險等階≥10級<br>
-                    近14天內沒有登入《原神》的玩家<br><br>
+					〓回歸旅行者定義〓<br>
+					冒險等階≥10級<br>
+					近14天內沒有登入《原神》的玩家<br><br>
 
-                    〓注意事項〓<br>
-                    1.請旅行者登入HoYoverse通行證並綁定《原神》中的遊戲角色參與活動，以確保活動獎勵順利發放與領取。<br><br>
+					〓注意事項〓<br>
+					1.請旅行者登入HoYoverse通行證並綁定《原神》中的遊戲角色參與活動，以確保活動獎勵順利發放與領取。<br><br>
 
-                    2.本次活動卡片在活動結束後暫無取得途徑，請旅行者及時領取。<br><br>
+					2.本次活動卡片在活動結束後暫無取得途徑，請旅行者及時領取。<br><br>
 
-                    3.完成拼圖後，獎勵將透過遊戲內信件發放，信件有效期限為30天，請記得領取。<br><br>
+					3.完成拼圖後，獎勵將透過遊戲內信件發放，信件有效期限為30天，請記得領取。<br><br>
 
-                    4.本次活動同帳號下僅限首次綁定的UID參與活動<br><br>
+					4.本次活動同帳號下僅限首次綁定的UID參與活動<br><br>
 
-                    5.旅行者僅可用自己的HoYoverse帳號邀請真實好友，若旅行者邀請自己的其他HoYoverse帳號或以其他方式製造不實邀請資料，已獲得的獎勵將會被取消並回收。
-                </p>
-                <!-- 按讚 -->
-                <div class="mb-2">
-                    <button class="btn "><i class="bi bi-chat-dots h4"></i></button><span>10</span>
-                    <button class="btn "><i class="bi bi-hand-thumbs-up h4 "></i></button><span>123</span>
-                </div>
-                <!-- 留言 -->
+					5.旅行者僅可用自己的HoYoverse帳號邀請真實好友，若旅行者邀請自己的其他HoYoverse帳號或以其他方式製造不實邀請資料，已獲得的獎勵將會被取消並回收。
+				</p>
+				<!-- 按讚 -->
+				<div class="mb-2">
+					<button class="btn "><i class="bi bi-chat-dots h4"></i></button><span>10</span>
+					<button class="btn "><i class="bi bi-hand-thumbs-up h4 "></i></button><span>123</span>
+				</div>
+				<!-- 留言 -->
 
-                <div class="mb-4">
-                    <div class="input-group mb-4">
-                        <i class="bi bi-chat-left-text input-group-text"></i>
-                        <input type="text" class="form-control" placeholder="快來發表你的評論吧">
-                        <button class="btn btn-outline-secondary"><i class="bi bi-emoji-smile  "></i></button></i>
-                        <button class="btn btn-outline-secondary"><i class="bi bi-image-fill "></i></button></i>
-                        <button class="btn btn-outline-secondary">發送</button>
-                    </div>
-                </div>
+				<div class="mb-4">
+					<div class="input-group mb-4">
+						<i class="bi bi-chat-left-text input-group-text"></i>
+						<input type="text" class="form-control" placeholder="快來發表你的評論吧">
+						<button class="btn btn-outline-secondary"><i class="bi bi-emoji-smile  "></i></button></i>
+						<button class="btn btn-outline-secondary"><i class="bi bi-image-fill "></i></button></i>
+						<button class="btn btn-outline-secondary">發送</button>
+					</div>
+				</div>
 
-                <!-- 評論區 -->
-                <div class="d-flex mb-2">
-                    <div>
-                        <img class="rounded-circle" style="width: 40px;"
-                             src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/df5099918ba860b71130060d123a71dd_5262774949539197790.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
-                        </img>
-                    </div>
-                    <!--  -->
-                    <div class="ms-2">
-                        <span class="text-primary">坂坂悠</span>
-                        <span>【原神】參與「碎片拾憶」活動！這是我的召回碼，快來綁定吧~ GDSYBAL52K</span>
-                        <div class="text-secondary" style="font-size: x-small;">
-                            <span class="ms-1">5小時前</span>
-                            <span class="ms-3"><a href="">回覆</a></span>
-                            <div class="btn-group btn-group-sm">
-                                <button class="btn "><i class="bi bi-hand-thumbs-up"></i></button>
-                                <button class="btn "><i class="bi bi-hand-thumbs-down"></i></button>
-                            </div>
-                        </div>
-                    </div>
+				<!-- 評論區 -->
+				<div class="d-flex mb-2">
+					<div>
+						<img class="rounded-circle" style="width: 40px;"
+							 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/df5099918ba860b71130060d123a71dd_5262774949539197790.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
+						</img>
+					</div>
+					<!--  -->
+					<div class="userComment ms-2">
+						<span class="text-primary">坂坂悠</span>
+						<span>【原神】參與「碎片拾憶」活動！這是我的召回碼，快來綁定吧~ GDSYBAL52K</span>
+						<div class="text-secondary" style="font-size: x-small;">
+							<span class="ms-1">5小時前</span>
+							<span class="ms-3"><button class="reply">回覆</button></span>
+							<div class="btn-group btn-group-sm">
+								<button class="btn "><i class="bi bi-hand-thumbs-up"></i></button>
+								<button class="btn "><i class="bi bi-hand-thumbs-down"></i></button>
+							</div>
+						</div>
+					</div>
 
-                </div>
-                <!-- 評論區 -->
-                <div class="d-flex">
-                    <div>
-                        <img class="rounded-circle" style="width: 40px;"
-                             src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/f4efe713c781520252e45c7884261397_2163598826624321026.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
-                        </img>
-                    </div>
-                    <!--  -->
-                    <div class="ms-2">
-                        <span class="text-primary">無名客夢</span>
-                        <span>【原神】參與「碎片拾憶」活動！這是我的召回碼，快來綁定吧~ GDSYBAL52K</span>
-                        <div class="text-secondary" style="font-size: x-small;">
-                            <span class="ms-1">5小時前</span>
-                            <span class="ms-3"><a href="">回覆</a></span>
-                            <div class="btn-group btn-group-sm">
-                                <button class="btn "><i class="bi bi-hand-thumbs-up"></i></button>
-                                <button class="btn "><i class="bi bi-hand-thumbs-down"></i></button>
-                            </div>
-                        </div>
-                    </div>
+				</div>
+				<!-- 評論區 -->
+				<div class="d-flex mb-2">
+					<div>
+						<img class="rounded-circle" style="width: 40px;"
+							 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/f4efe713c781520252e45c7884261397_2163598826624321026.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
+						</img>
+					</div>
+					<!--  -->
+					<div class="ms-2 userComment">
+						<span class="text-primary">無名客夢</span>
+						<span>【原神】參與「碎片拾憶」活動！這是我的召回碼，快來綁定吧~ GDSYBAL52K</span>
+						<div class="text-secondary" style="font-size: x-small;">
+							<span class="ms-1">5小時前</span>
+							<span class="ms-3"><button class="reply">回覆</button></span>
+							<div class="btn-group btn-group-sm">
+								<button class="btn "><i class="bi bi-hand-thumbs-up"></i></button>
+								<button class="btn "><i class="bi bi-hand-thumbs-down"></i></button>
+							</div>
+						</div>
+					</div>
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-        </div>
-        <!-- 右側 -->
-        <div class="m-1 p-1">
-            <div class="p-3 rounded">
-                <div class="input-group">
-                    <input type="search" class="w-75 form-control">
-                    <button class="btn btn-outline-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
+		</div>
+		<!-- 右側 -->
+		<div class="m-1 p-1">
+			<div class="p-3 rounded">
+				<div class="input-group">
+					<input type="search" class="w-75 form-control">
+					<button class="btn btn-outline-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
+				</div>
 
-            </div>
-            <div class="mt-1  p-3 rounded ">
-                <div class="list-group">
-                    <a href="/Forum/Post" class="btn btn-outline-secondary">快來發文吧!</a>
-                </div>
+			</div>
+			<div class="mt-1  p-3 rounded ">
+				<div class="list-group">
+					<a href="/Forum/Post" class="btn btn-outline-secondary">快來發文吧!</a>
+				</div>
 
-            </div>
-            <div class="mt-2  p-3 rounded ">
-                <h6>最新遊戲新聞</h6>
-                <ul class="list-group" style="font-size:small;">
-                    <li class="list-group-item list-group-item-action"><a href="https://tw.news.yahoo.com/%E3%80%8A%E5%B4%A9%E5%A3%9E%EF%BC%9A%E6%98%9F%E7%A9%B9%E9%90%B5%E9%81%93%E3%80%8B22%E7%89%88%E6%96%B0%E8%A7%92%E3%80%8C%E7%9F%A5%E6%9B%B4%E9%B3%A5%E3%80%8D%E6%94%BB%E7%95%A5%EF%BC%9A%E7%B5%84%E9%9A%8A%E5%BB%BA%E8%AD%B0%E3%80%81%E5%85%89%E9%8C%90%E9%81%BA%E5%99%A8%E6%8E%A8%E8%96%A6-222105335.html">《崩壞：星穹鐵道》2.2版新角「知更鳥」攻略：組隊建議、光錐&遺器推薦</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+			</div>
+			<div class="mt-2  p-3 rounded ">
+				<h6>最新遊戲新聞</h6>
+				<ul class="list-group" style="font-size:small;">
+					<li class="list-group-item list-group-item-action"><a href="https://tw.news.yahoo.com/%E3%80%8A%E5%B4%A9%E5%A3%9E%EF%BC%9A%E6%98%9F%E7%A9%B9%E9%90%B5%E9%81%93%E3%80%8B22%E7%89%88%E6%96%B0%E8%A7%92%E3%80%8C%E7%9F%A5%E6%9B%B4%E9%B3%A5%E3%80%8D%E6%94%BB%E7%95%A5%EF%BC%9A%E7%B5%84%E9%9A%8A%E5%BB%BA%E8%AD%B0%E3%80%81%E5%85%89%E9%8C%90%E9%81%BA%E5%99%A8%E6%8E%A8%E8%96%A6-222105335.html">《崩壞：星穹鐵道》2.2版新角「知更鳥」攻略：組隊建議、光錐&遺器推薦</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </body>
+<script src="~/js/artical.js"></script>

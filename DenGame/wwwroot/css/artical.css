@@ -1,0 +1,8 @@
+﻿.reply{
+    background:white;
+    color:gray;
+    border:none;
+}
+.reply:hover{
+    color:dodgerblue;
+}

@@ -1,0 +1,28 @@
+﻿.purple-cl {
+    background: #cc7edd;
+    background: -moz-linear-gradient(top, #cc7edd 0%, #8c56c5 50%, #D07ECC 100%);
+    background: -webkit-linear-gradient(top, #cc7edd 0%, #8c56c5 50%, #D07ECC 100%);
+    background: linear-gradient(to bottom, #cc7edd 0%, #8c56c5 50%, #D07ECC 100%);
+}
+
+img {
+    width:150px;
+    object-fit:cover;
+}
+
+.title {
+    width: 700px;
+}
+
+.imglist-text {
+    padding-left: 10px;
+}
+
+.b-list_brief {
+    font-size: 13px;
+}
+.b-list_title:hover {
+    color: rgb(197, 37, 189);
+}
+
+
