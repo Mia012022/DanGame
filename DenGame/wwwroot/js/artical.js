@@ -4,3 +4,11 @@
 	$(this).attr('disabled', true);
 	
 })
+var num = 0;
+$('#btnArticalLike').on('click', function () {
+	
+	num++;
+
+	$('#likeNumber').html(num);
+
+})
