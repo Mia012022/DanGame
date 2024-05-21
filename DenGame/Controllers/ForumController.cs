@@ -16,5 +16,9 @@ namespace DenGame.Controllers
 		{
 			return View();
 		}
+		public IActionResult ForumUser()
+		{
+			return View();
+		}
 	}
 }
