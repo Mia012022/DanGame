@@ -6,7 +6,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<script src="~/lib/ckeditor5/ckeditor.js"></script>
+	<script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script>
 	<link rel="stylesheet" href="css/editor.css">
 	<link rel="stylesheet" href="~/css/post.css" asp-append-version="true" />
 	<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
@@ -23,14 +23,17 @@
 		<form class="m-2">
 			<h3 class="border-bottom p-2">發文</h3>
 			<div class="form-row">
-				<div id="closeLabel" class="form-group col-md-6 mb-4">
+				<div id="closeLabel" class="form-group col-md-6 mb-1">
 					<i class="bi bi-card-image"></i><label class="ms-1">封面</label>
 					<input id="imageInput" type="file" class="form-control">
 				</div>
 				@* 移除button *@
-					<button id="deleteImage" style="display:none;">移除</button>
-				
-				<div class="form-group mb-4">
+				<div class="d-flex justify-content-end mt-0">
+					<button id="editImage" style="display:none;" class="btn "><i class="bi bi-pencil-square"></i></button>
+
+					<button id="deleteImage" style="display:none;" class="btn  ms-2" ><i class="bi bi-trash"></i></button>
+				</div>
+				<div class="form-group mb-4 mt-2">
 					<i class="bi bi-vector-pen"></i><label class="ms-1">標題</label>
 					<div class="input-group">
 						<input id="textInput" type="text" class="form-control" maxlength="200" auto-height
@@ -47,7 +50,7 @@
 					<!-- 富文本編輯器 -->
 					<i class="bi bi-pencil-fill"></i><label class="ms-1">內文</label>
 
-					<textarea id="editor" placeholder="請輸入正文"></textarea>
+					<textarea id="editor" class="editor" placeholder="請輸入正文"></textarea>
 				</div>
 
 				<div class="form-group mb-4">
@@ -102,77 +105,8 @@
 		</form>
 
 	</div>
-	<script>
-		var myEditor;
-		ClassicEditor
-			.create(document.querySelector('#editor'))
-			.then(editor => {
-				console.log(editor);
-				myEditor = editor;
-			})
-			.catch(error => {
-				console.error(error);
-			});
-		$(document).ready(function () {
-			$('#imageInput').on('change', function (e) {
-				var file = e.target.files[0];
-				var reader = new FileReader();
-
-				reader.onload = function (e) {
-					var imageData = e.target.result;
-					$('#closeLabel').after('<div id="imageDisplayArea" style="width:100%;margin-bottom:20px"></div>');
-					$('#imageDisplayArea').html('<img src="' + imageData + '" alt="Selected Image" style="width:100%;height:500px;object-fit:cover;">');
-					$('#closeLabel').css('display', 'none');
-					$('#deleteImage').show();
-				};
-
-				reader.readAsDataURL(file);
-			});
-			//移除照片
-			$('#deleteImage').on('click', function () {
-				event.preventDefault();
-				$('#imageDisplayArea').remove();
-				$('#imageInput').val('');
-				$('#deleteImage').hide();
-				$('#closeLabel').show();
-			});
-			// 監聽字數
-			$('#textInput').on('input', function () {
-				var currentLength = $(this).val().length;
-				$('#charCount').text(currentLength + '/200');
-			});
-
-			//預覽畫面
-			$('#previewBtn').on('click', function () {
-				event.preventDefault();
-
-				var title = $('#textInput').val();
-				var content = $('.editor').val();
-				var image = $('#imageInput')[0].files[0];
-				$('#previewTitle').text(title);
-				$('#previewContent').html(myEditor.getData());
-
-				if (image) {
-					var reader = new FileReader();
-					reader.onload = function (e) {
-						$("#previewImage").attr("src", e.target.result).show();
-					}
-					reader.readAsDataURL(image);
-				} else {
-					$("#previewImage").hide();
-				}
-				$('#preview').show();
-			});
-			$('.close').on('click', function () {
-				$('#preview').hide();
-			});
-
-
-
-		});
-
-
-	</script>
+	<script src="~/js/post.js"></script>
+	
 
 </body>
 
