@@ -157,12 +157,13 @@ $(document).ready(function () {
 		$('#imageDisplayArea').remove();
 		$('#imageInput').val('');
 		$('#deleteImage').hide();
+		$('#editImage').hide();
 		$('#closeLabel').show();
 	});
 	// 監聽字數
 	$('#textInput').on('input', function () {
 		var currentLength = $(this).val().length;
-		$('#charCount').text(currentLength + '/200');
+		$('#charCount').text(currentLength + '/50');
 	});
 
 	//預覽畫面

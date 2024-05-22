@@ -25,23 +25,43 @@
 <div class="d-flex  m-auto">
 		<div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
 			<div class="m-4 "  >
-				<ul class="nav">
-					  <li class="nav-item ms-1">
-						<span>文章</span>
-					  </li>
-					  <li class="nav-item ms-3">
-						<span>評論</span>
-					  </li>
-					  <li class="nav-item ms-3">
-						<span>收藏</span>
-					  </li>
-				</ul>
-				<hr />
-				<div class="row justify-content-center">
-					<img src="https://www.hoyolab.com/_nuxt/img/7ea569b.png" style="width:250px" />
-					<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
-					
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">文章</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">評論</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">收藏</button>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+					<div class="row justify-content-center">
+						<img src="https://www.hoyolab.com/_nuxt/img/7ea569b.png" style="width:250px" />
+						<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
+						
+					</div>
 				</div>
+				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					<div class="row justify-content-center">
+						<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
+						<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
+						
+					</div>
+				</div>
+				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+					<div class="row justify-content-center">
+						<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
+						<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
+
+					</div>
+				</div>
+			</div>
+				
+				
+				
 
 
 				</div>
@@ -50,7 +70,7 @@
 
 		
 		<!-- 右側 -->
-		<div class="m-1 p-1">
+	<div class="m-1 p-1 w-25">
 			
 			<div class="mt-1  p-3 rounded ">
 				<div class="list-group">
@@ -58,11 +78,6 @@
 				</div>
 
 			</div>
-			<div class="mt-2  p-3 rounded ">
-				<h6>最新遊戲新聞</h6>
-				<ul class="list-group" style="font-size:small;">
-					<li class="list-group-item list-group-item-action"><a href="https://tw.news.yahoo.com/%E3%80%8A%E5%B4%A9%E5%A3%9E%EF%BC%9A%E6%98%9F%E7%A9%B9%E9%90%B5%E9%81%93%E3%80%8B22%E7%89%88%E6%96%B0%E8%A7%92%E3%80%8C%E7%9F%A5%E6%9B%B4%E9%B3%A5%E3%80%8D%E6%94%BB%E7%95%A5%EF%BC%9A%E7%B5%84%E9%9A%8A%E5%BB%BA%E8%AD%B0%E3%80%81%E5%85%89%E9%8C%90%E9%81%BA%E5%99%A8%E6%8E%A8%E8%96%A6-222105335.html">《崩壞：星穹鐵道》2.2版新角「知更鳥」攻略：組隊建議、光錐&遺器推薦</a></li>
-				</ul>
-			</div>
+			
 		</div>
 	</div>
