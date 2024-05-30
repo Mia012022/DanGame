@@ -1,8 +1,13 @@
+using DenGame.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews();
+var connectionString = builder.Configuration.GetConnectionString("DanGameDbContext");
+builder.Services.AddDbContext<DanGameDbContext>(x => x.UseSqlServer(connectionString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

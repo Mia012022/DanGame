@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<DenGame.Models.ArticleList>
+@{
 	ViewData["Title"] = "Index";
 }
 <head>
@@ -43,7 +44,7 @@
 				</div>
 
 				<table class="table table-striped table-Info table-hover shadow bg-light bg-gradient">
-					<tbody>
+					<thead>
 						<tr class="text-white purple-cl">
 							<th scope="col">#</th>
 							<th scope="col">文章列表</th>
@@ -51,110 +52,40 @@
 							<th scope="col"><div class="d-flex justify-content-center"><i class="bi bi-chat-left"></i></div></th>
 							<th scope="col"><div class="d-flex justify-content-center"><i class="bi bi-calendar"></i></div></th>
 						</tr>
-						<tr>
-							<th scope="col" class="align-middle">
-								<div class="d-flex justify-content-center text-muted">1</div>
-							</th>
-							<td class="title align-middle">
-								<a href="/Forum/Artical" class="d-flex text-decoration-none">
-									<div>
-										<img src="https://upload-os-bbs.hoyolab.com/upload/2024/04/30/6729e8f3a5c9291c41a558149aedf71b_927294122593169208.jpg"
-											 alt="" style="width: 150px; object-fit: cover;">
-									</div>
-
-									<div class="imglist-text">
-										<div class="b-list_title fw-bold ">【情報】網頁活動「碎片拾憶」(40原石)</div>
-										<div class="b-list_brief text-secondary">
-											過往的記憶如同拼圖通常…將它們拼湊在一起，便能勾勒出我們走過的路。〓活動時間〓
-											2024年5月7日-2024年5月26日11:59（UTC+8）
-
-											*活動結束後便無法領取獎勵，
+					</thead>
+					<tbody>
+						@foreach (var item in Model)
+						{
+							<tr>
+								<th scope="col" class="align-middle">
+									<div class="d-flex justify-content-center text-muted">1</div>
+								</th>
+								<td class="title align-middle">
+									<a href="/Forum/Artical" class="d-flex text-decoration-none">
+										<div>
+											<img src="https://upload-os-bbs.hoyolab.com/upload/2024/04/30/6729e8f3a5c9291c41a558149aedf71b_927294122593169208.jpg"
+											alt="" style="width: 150px; object-fit: cover;">
 										</div>
-									</div>
-								</a>
-							</td>
-							<td class="align-middle " style=" font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>1000</span></div></div>
-							</td>
-							<td class="align-middle" style="font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>500</span></div></div>
-							</td>
-							<td class="align-middle" style=" font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"> <div>3days</div> </div>
-							</td>
-						</tr>
-						@* 2 *@
-						<tr>
-							<th scope="col" class="align-middle">
-								<div class="d-flex justify-content-center text-muted">2</div>
-							</th>
-							<td class="title align-middle">
-								<a href="" class="d-flex text-decoration-none">
-									<div>
-										<img src="https://truth.bahamut.com.tw/s01/202303/3a7c201de020bd0558d94209cd976be4.PNG?w=300&h=300&fit=o"
-											 alt="">
-									</div>
 
-									<div class="imglist-text">
-										<div class="b-list_title fw-bold ">【集中串】隊伍配置/深淵配隊/卡池請益/武器角色養成順序</div>
-										<div class="b-list_brief text-secondary">
-											(目前主力隊伍)
-											前言
-											健檢文過多，版面管理耗時費力
-
-											規範
-											相關文章一律發布至此串，發表於此串以外的健檢文視討論內容刪除文章
-											單一巴哈帳號一日內得回文2次
+										<div class="imglist-text">
+											<div class="b-list_title fw-bold ">@item.ArticalTitle</div>
+											<div class="b-list_brief text-secondary">
+												@Html.Raw(item.ArticalContent)
+											</div>
 										</div>
-									</div>
-								</a>
-							</td>
-							<td class="align-middle " style=" font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>1000</span></div></div>
-							</td>
-							<td class="align-middle" style="font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>500</span></div></div>
-							</td>
-							<td class="align-middle" style=" font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"> <div>3days</div> </div>
-							</td>
-						</tr>
-						@* 3 *@
-						<tr>
-							<th scope="col" class="align-middle">
-								<div class="d-flex justify-content-center text-muted">3</div>
-							</th>
-							<td class="title align-middle">
-								<a href="" class="d-flex text-decoration-none">
-									<div>
-										<img src="https://upload-os-bbs.hoyolab.com/upload/2024/05/07/0/1cc75478c83a137fd2f3d09950108677_6760563553739822913.jpeg"
-											 alt="">
-									</div>
-
-									<div class="imglist-text">
-										<div class="b-list_title fw-bold">【情報】4.6版本 活動祈願第二期「餘火變相 / 心珠循琅 / 神鑄賦形」</div>
-										<div class="b-list_brief text-secondary">
-											「餘火變相」祈願：「久世浮傾·流浪者(風)」機率UP！
-
-											〓祈願時間〓
-											2024/5/14 18:00:00-2024/6/4 14:59:00
-
-											〓祈願介紹〓
-											● 活動期間，限定五星角色「久世浮傾·
-										</div>
-									</div>
-								</a>
-							</td>
-							<td class="align-middle " style=" font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>1000</span></div></div>
-							</td>
-							<td class="align-middle" style="font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>500</span></div></div>
-							</td>
-							<td class="align-middle" style=" font-size:x-small">
-								<div class="d-flex justify-content-center text-muted"> <div>3days</div> </div>
-							</td>
-						</tr>
+									</a>
+								</td>
+								<td class="align-middle " style=" font-size:x-small">
+									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>1000</span></div></div>
+								</td>
+								<td class="align-middle" style="font-size:x-small">
+									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>500</span></div></div>
+								</td>
+								<td class="align-middle" style=" font-size:x-small">
+									<div class="d-flex justify-content-center text-muted"> <div>3days</div> </div>
+								</td>
+							</tr>
+						}
 
 					</tbody>
 				</table>
@@ -185,4 +116,19 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script>
+	<script>
+		$(document).ready(function () {
+			$("oembed").each(function () {
+				var url = $(this).attr("url");
+				if (url.includes("youtube.com")) {
+					var videoId = url.split("v=")[1];
+					var embedUrl = "https://www.youtube.com/embed/" + videoId;
+					$(this).replaceWith('<iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+				}
+			});
+		});
+	</script>
 </body>

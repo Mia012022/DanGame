@@ -1,19 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using DenGame.Models;
+using Microsoft.EntityFrameworkCore;
 namespace DenGame.Controllers
 {
 	public class ForumController : Controller
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly ILogger<ForumController> _logger;
-		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger)
+		private readonly DanGameDbContext _context;
+		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger, DanGameDbContext context)
 		{
 			_env = env;
 			_logger = logger;
+			_context = context;
 		}
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			return View(await _context.ArticleLists.ToListAsync());
 		}
 		public IActionResult Post()
 		{
@@ -25,6 +28,37 @@ namespace DenGame.Controllers
 		}
 		public IActionResult ForumUser()
 		{
+			return View();
+		}
+		[HttpGet]
+		public IActionResult Upload()
+		{
+			return View();
+		}
+		[HttpPost]
+		public async Task<IActionResult> Upload(IFormFile file, string title, string description)
+		{
+			if (file != null && file.Length > 0)
+			{
+				using (var memoryStream = new MemoryStream())
+				{
+					await file.CopyToAsync(memoryStream);
+					var artical = new ArticleList
+					{
+						UserId = 1,
+						ArticalCoverPhoto = memoryStream.ToArray(),
+						ArticalTitle = title,
+						ArticalContent = description
+						
+					};
+
+					_context.ArticleLists.Add(artical);
+					await _context.SaveChangesAsync();
+				}
+
+				return RedirectToAction("Index");
+			}
+
 			return View();
 		}
 		[HttpGet]
