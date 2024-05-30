@@ -18,8 +18,10 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    
 }
+   
 .header-cl {
     background: #8c56c5;
     background: -moz-linear-gradient(top, #8c56c5 0%, #cc7edd 50%, #fec7ff 100%);

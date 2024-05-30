@@ -6,3 +6,19 @@
 .reply:hover{
     color:dodgerblue;
 }
+
+#emoji-picker {
+    display: none;
+    position: absolute;
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 10px;
+    z-index: 1000;
+    margin-top:40px
+}
+
+.emoji {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 5px;
+}
