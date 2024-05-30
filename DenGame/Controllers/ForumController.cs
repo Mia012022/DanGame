@@ -4,6 +4,13 @@ namespace DenGame.Controllers
 {
 	public class ForumController : Controller
 	{
+		private readonly IWebHostEnvironment _env;
+		private readonly ILogger<ForumController> _logger;
+		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger)
+		{
+			_env = env;
+			_logger = logger;
+		}
 		public IActionResult Index()
 		{
 			return View();
@@ -19,6 +26,24 @@ namespace DenGame.Controllers
 		public IActionResult ForumUser()
 		{
 			return View();
+		}
+		[HttpGet]
+		public IActionResult UploadImage()
+		{
+			return View();
+		}
+		[HttpPost]
+		public IActionResult UploadImage(List<IFormFile> files)
+		{
+			var filepath = "";
+			foreach (IFormFile photo in Request.Form.Files)
+			{
+				string serverMapPath = Path.Combine(_env.WebRootPath, "images", photo.FileName);
+				using (var stream = new FileStream(serverMapPath, FileMode.Create))
+				{ photo.CopyTo(stream); }
+				filepath = "http://localhost:5237/" + "images/" + photo.FileName;
+			}
+			return Json(new { url = filepath });
 		}
 	}
 }
