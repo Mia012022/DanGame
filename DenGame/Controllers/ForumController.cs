@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DenGame.Models;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList.Mvc.Core;
+using X.PagedList;
 namespace DenGame.Controllers
 {
 	public class ForumController : Controller
@@ -8,27 +10,42 @@ namespace DenGame.Controllers
 		private readonly IWebHostEnvironment _env;
 		private readonly ILogger<ForumController> _logger;
 		private readonly DanGameDbContext _context;
+		int pageSize = 3;
 		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger, DanGameDbContext context)
 		{
 			_env = env;
 			_logger = logger;
 			_context = context;
 		}
-		public async Task<IActionResult> Index()
+		public async  Task<IActionResult> Index(int? page)
 		{
-			return View(await _context.ArticleLists.ToListAsync());
+			int pageNumber = (page ?? 1);
+			var artical =  _context.ArticleLists.OrderBy(c => c.ArticalId).ToPagedList(pageNumber, pageSize);
+			var images = await _context.ArticleLists.ToListAsync();
+			return View(artical);
 		}
 		public IActionResult Post()
 		{
 			return View();
 		}
-		public IActionResult Artical()
+		public async Task<IActionResult> Artical(int? id)
 		{
-			return View();
+			if (id == null)
+			{
+				return NotFound();
+			}
+			var articallist = await _context.ArticleLists
+				.FirstOrDefaultAsync(x => x.ArticalId==id);
+			if(articallist == null)
+			{
+				return NotFound();
+			}
+			return View(articallist);
 		}
-		public IActionResult ForumUser()
+		public async Task<IActionResult> ForumUser()
 		{
-			return View();
+			
+			return View(await _context.ArticleLists.ToListAsync());
 		}
 		[HttpGet]
 		public IActionResult Upload()
@@ -45,7 +62,7 @@ namespace DenGame.Controllers
 					await file.CopyToAsync(memoryStream);
 					var artical = new ArticleList
 					{
-						UserId = 1,
+						UserId = 2,
 						ArticalCoverPhoto = memoryStream.ToArray(),
 						ArticalTitle = title,
 						ArticalContent = description

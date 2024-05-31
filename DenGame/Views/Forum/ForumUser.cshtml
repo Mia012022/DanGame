@@ -1,30 +1,31 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model IEnumerable<DenGame.Models.ArticleList>
 @{
 	ViewData["Title"] = "ForumUser";
 }
 <div class="d-flex mb-3">
-					<div>
-						<img class="rounded-circle" style="width: 70px;"
-							 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/d6048f30e1ec7c52013ad5ed41500099_293482052564117040.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
-						</img>
-					</div>
-					<div class="m-3">
-						<span class="text-primary">坂坂悠</span>
-						<div>
-							<span class="text-secondary ">0</span>
-							<span class="text-secondary ">文章</span>
-							<span class="text-secondary ms-2">0</span>
-							<span class="text-secondary ">讚數</span>
-						</div>
+	<div>
+		<img class="rounded-circle" style="width: 70px;"
+			 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/d6048f30e1ec7c52013ad5ed41500099_293482052564117040.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
+		</img>
+	</div>
+	<div class="m-3">
+		<span class="text-primary">坂坂悠</span>
+		<div>
+			<span class="text-secondary ">0</span>
+			<span class="text-secondary ">文章</span>
+			<span class="text-secondary ms-2">0</span>
+			<span class="text-secondary ">讚數</span>
+		</div>
 
-					</div>
-				</div>
+	</div>
+</div>
 
 <div class="d-flex  m-auto">
-		<div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
-			<div class="m-4 "  >
+	<div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
+		<div class="m-4 ">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
 					<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">文章</button>
@@ -38,17 +39,28 @@
 			</ul>
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-					<div class="row justify-content-center">
+					@* <div class="row justify-content-center">
 						<img src="https://www.hoyolab.com/_nuxt/img/7ea569b.png" style="width:250px" />
 						<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
-						
-					</div>
+
+					</div> *@
+					@foreach (var item in Model)
+					{
+
+						<div class="row mb-2 mt-2">
+							<div class="col-10 "><a asp-action="Artical" asp-route-id="@item.ArticalId" class="text-decoration-none"> @Html.DisplayFor(modelItem => item.ArticalTitle)</a></div>
+							<div class="col-1 "><a asp-action="Edit" asp-route-id="@item.ArticalId" class="text-decoration-none">編輯</a></div>
+							<div class="col-1"><a asp-action="Delete" asp-route-id="@item.ArticalId" class="text-decoration-none">刪除</a></div>
+
+						</div>
+					}
+
 				</div>
 				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 					<div class="row justify-content-center">
 						<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
 						<div><p class="text-center">你還沒有已評論的內容喔!</p></div>
-						
+
 					</div>
 				</div>
 				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -59,25 +71,25 @@
 					</div>
 				</div>
 			</div>
-				
-				
-				
 
 
-				</div>
 
-			</div>
 
-		
-		<!-- 右側 -->
-	<div class="m-1 p-1 w-25">
-			
-			<div class="mt-1  p-3 rounded ">
-				<div class="list-group">
-					<a href="/Forum/Post" class="btn btn-outline-secondary">快來發文吧!</a>
-				</div>
 
-			</div>
-			
 		</div>
+
 	</div>
+
+
+	<!-- 右側 -->
+	<div class="m-1 p-1 w-25">
+
+		<div class="mt-1  p-3 rounded ">
+			<div class="list-group">
+				<a href="/Forum/Post" class="btn btn-outline-secondary">快來發文吧!</a>
+			</div>
+
+		</div>
+
+	</div>
+</div>

@@ -1,10 +1,16 @@
-﻿@model IEnumerable<DenGame.Models.ArticleList>
+﻿@* @model IEnumerable<DenGame.Models.ArticleList> *@
+	@model IPagedList<DenGame.Models.ArticleList>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
 @{
 	ViewData["Title"] = "Index";
+	var parser = new DenGame.Helpers.HtmlParser();
+	
 }
 <head>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="~/css/forumIndex.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/forumIndex.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/PagedList.css" asp-append-version="true" />
 <script src="https://kit.fontawesome.com/b5dde33e16.js" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 	  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -17,7 +23,19 @@
 		background-size: cover; */
 		background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('../img/purple.png') no-repeat 0% 20%/ cover;
 	}
-	
+
+	.articalcontent img, iframe {
+		width: 150px;
+		height: 120px;
+		object-fit: cover;
+	}
+
+	.two-lines {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
 </style>
 <body>
 	<div class="m-1">
@@ -25,19 +43,8 @@
 			<div class="m-1 w-100   rounded">
 				<div class="p-1">
 					<div class="d-flex justify-content-around w-25 m-auto" >
-						<div>
-							<a href="" class="btn btn-outline-secondary"><i class="fa-solid fa-caret-left"></i></a>
-						</div>
-						<div>
-							<p class="page">
-								<a href="" class="btn btn-outline-secondary">1</a>
-								<a href="" class="btn btn-outline-secondary">2</a>
-								<a href="" class="btn btn-outline-secondary">3</a>
-							</p>
-						</div>
-						<div>
-							<a href="" class="btn btn-outline-secondary"><i class="fa-solid fa-caret-right"></i></a>
-						</div>
+						@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+						
 					</div>
 					<a href="" class="btn btn-outline-secondary">New</a>
 					<a href="" class="btn btn-outline-secondary">Hot</a>
@@ -56,21 +63,22 @@
 					<tbody>
 						@foreach (var item in Model)
 						{
+							var concatenatedContent = parser.ConcatenateParagraphContents(item.ArticalContent);
 							<tr>
 								<th scope="col" class="align-middle">
 									<div class="d-flex justify-content-center text-muted">1</div>
 								</th>
 								<td class="title align-middle">
-									<a href="/Forum/Artical" class="d-flex text-decoration-none">
+									<a asp-action="Artical" asp-route-id="@item.ArticalId" class="d-flex text-decoration-none">
 										<div>
-											<img src="https://upload-os-bbs.hoyolab.com/upload/2024/04/30/6729e8f3a5c9291c41a558149aedf71b_927294122593169208.jpg"
-											alt="" style="width: 150px; object-fit: cover;">
+											<img src="data:image;base64,@Convert.ToBase64String(item.ArticalCoverPhoto)"
+												 alt="" style="width: 150px;height: 90px; object-fit: cover;">
 										</div>
 
 										<div class="imglist-text">
 											<div class="b-list_title fw-bold ">@item.ArticalTitle</div>
-											<div class="b-list_brief text-secondary">
-												@Html.Raw(item.ArticalContent)
+											<div class="b-list_brief text-secondary articalcontent two-lines">
+												<p>@Html.Raw(concatenatedContent)</p>
 											</div>
 										</div>
 									</a>
@@ -82,7 +90,7 @@
 									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>500</span></div></div>
 								</td>
 								<td class="align-middle" style=" font-size:x-small">
-									<div class="d-flex justify-content-center text-muted"> <div>3days</div> </div>
+									<div class="d-flex justify-content-center text-muted"> <div>@item.ArticalCreateDate</div> </div>
 								</td>
 							</tr>
 						}

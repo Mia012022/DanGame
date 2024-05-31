@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DenGame.Models.ArticleList;
+
+@{
 	ViewData["Title"] = "Artical";
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -11,7 +13,9 @@
 
 <style>
 	img {
-		width: 100%;
+		max-width: 100%;
+		max-height:500px;
+		object-fit:cover;
 	}
 
 	a {
@@ -27,7 +31,7 @@
 	<div class="d-flex  m-auto">
 		<div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
 			<div class="m-4 ">
-				<h3>【情報】網頁活動「碎片拾憶」(40原石)</h3>
+				<h3>@Model.ArticalTitle</h3>
 				<hr>
 				<!-- user -->
 				<div class="d-flex mb-3">
@@ -38,58 +42,13 @@
 					</div>
 					<div class="ms-1">
 						<span class="text-primary ">坂坂悠</span>
-						<p class="text-secondary " style="font-size: x-small;">2024-05-07 19:10:28</p>
+						<p class="text-secondary " style="font-size: x-small;">@Model.ArticalCreateDate</p>
 					</div>
 				</div>
 
-				<figure>
-					<img src="https://upload-os-bbs.hoyolab.com/upload/2024/04/30/6729e8f3a5c9291c41a558149aedf71b_927294122593169208.jpg"
-						 alt="">
-					<figcaption class="text-center">過往的記憶如同拼圖通常…將它們拼湊在一起，便能勾勒出我們走過的路。</figcaption>
-				</figure>
-				<a href="https://act.hoyoverse.com/ys/event/e20240506jigsaw-ih4e10/index.html?game_biz=hk4e_global&hyl_presentation_style=fullscreen&hyl_auth_required=true&hyl_landscape=true&hyl_hide_status_bar=true&utm_source=hoyolab&utm_medium=post">
-					<p class="text-center">--點擊參與活動-- </p>
-				</a>
-				<p>
-					〓活動時間〓
-					2024年5月7日-2024年5月26日11:59（UTC+8）<br><br>
-
-					*活動結束後便無法領取獎勵，請及時領取*<br><br>
-
-					〓參與條件〓<br>
-					冒險等階≥10級<br><br>
-
-					〓活動獎勵〓<br>
-					●完成拼圖關卡，累計可領取共計40原石獎勵。<br>
-					●首次分享活動，可領取20,000摩拉獎勵。<br>
-					●完成有獎召回，邀請者可額外獲得60原石獎勵。<br><br>
-
-					*活動結束後將無法遊玩關卡或兌換拼圖碎片，請旅行者及時參與。<br><br>
-
-					〓活動玩法說明〓<br>
-					1.活動期間，旅行者可以透過每日登入《原神》、消耗原萃樹脂、完成秘境等挑戰任務獲得拼圖碎片。<br><br>
-
-					2.拼圖碎片可幫助旅行者獲得完整的卡片並進入下一個拼圖關卡。<br><br>
-
-					3.活動期間，旅行者可透過卡片及卡片上的召回碼邀請回歸旅行者。回歸旅行者在網頁中完成綁定後，被綁定的旅行者可獲得拼圖碎片獎勵。<br><br>
-
-					4.被邀請的旅行者完成網頁活躍任務，邀請者可獲得額外原石獎勵。<br><br>
-
-					〓回歸旅行者定義〓<br>
-					冒險等階≥10級<br>
-					近14天內沒有登入《原神》的玩家<br><br>
-
-					〓注意事項〓<br>
-					1.請旅行者登入HoYoverse通行證並綁定《原神》中的遊戲角色參與活動，以確保活動獎勵順利發放與領取。<br><br>
-
-					2.本次活動卡片在活動結束後暫無取得途徑，請旅行者及時領取。<br><br>
-
-					3.完成拼圖後，獎勵將透過遊戲內信件發放，信件有效期限為30天，請記得領取。<br><br>
-
-					4.本次活動同帳號下僅限首次綁定的UID參與活動<br><br>
-
-					5.旅行者僅可用自己的HoYoverse帳號邀請真實好友，若旅行者邀請自己的其他HoYoverse帳號或以其他方式製造不實邀請資料，已獲得的獎勵將會被取消並回收。
-				</p>
+				<div>
+				@Html.Raw(Model.ArticalContent)
+				</div>
 				<!-- 按讚 -->
 				<div class="mb-2">
 					<button class="btn "><i class="bi bi-chat-dots h4"></i></button><span>2</span>
@@ -190,6 +149,20 @@
 	</div>
 </body>
 <script src="~/js/artical.js"></script>
+<script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script>
+<script>
+	$(document).ready(function () {
+		$("oembed").each(function () {
+			var url = $(this).attr("url");
+			if (url.includes("youtube.com")) {
+				var videoId = url.split("v=")[1];
+				var embedUrl = "https://www.youtube.com/embed/" + videoId;
+				$(this).replaceWith('<iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+			}
+		});
+	});
+</script>
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
 		const emojiButton = document.getElementById('emoji-button');
