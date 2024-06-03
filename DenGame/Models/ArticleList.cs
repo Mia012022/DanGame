@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DenGame.Models;
 
@@ -24,4 +25,7 @@ public partial class ArticleList
     public virtual ICollection<ArticalView> ArticalViews { get; set; } = new List<ArticalView>();
 
     public virtual User User { get; set; } = null!;
+
+	[NotMapped]
+	public IFormFile? File { get; set; }
 }

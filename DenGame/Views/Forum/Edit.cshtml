@@ -1,5 +1,6 @@
-﻿@{
-	ViewData["Title"] = "Post";
+﻿@model DenGame.Models.ArticleList;
+@{
+	ViewData["Title"] = "Edit";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -20,8 +21,9 @@
 
 <body>
 	<div class="shadow border border-1 rounded w-75 m-auto mt-2">
-		<form class="m-2" asp-action="Upload" asp-controller="Forum" method="post" enctype="multipart/form-data">
-			<h3 class="border-bottom p-2">發文</h3>
+		<form class="m-2" asp-action="Edit" asp-controller="Forum" method="post" enctype="multipart/form-data">
+			<h3 class="border-bottom p-2">編輯文章</h3>
+			<input type="hidden" name="ArticalId" value="@Model.ArticalId" />
 			<div class="form-row">
 				<div id="closeLabel" class="form-group col-md-6 mb-1">
 					<i class="bi bi-card-image"></i><label class="ms-1" for="file">封面</label>
@@ -34,9 +36,9 @@
 					<button id="deleteImage" style="display:none;" class="btn  ms-2"><i class="bi bi-trash"></i></button>
 				</div>
 				<div class="form-group mb-4 mt-2">
-					<i class="bi bi-vector-pen"></i><label for="title" class="ms-1">標題</label>
+					<i class="bi bi-vector-pen"></i><label for="ArticalTitle" class="ms-1">標題</label>
 					<div class="input-group">
-						<input id="textInput" type="text" name="title" class="form-control" maxlength="50" auto-height
+						<input id="textInput" type="text" name="ArticalTitle" class="form-control" maxlength="50" auto-height value="@Model.ArticalTitle"
 							   placeholder="請輸入標題(必填)">
 						<div class="input-group-append">
 							<span id="charCount" class="input-group-text">0/50</span>
@@ -48,9 +50,9 @@
 				<div class="form-group mb-4">
 
 					<!-- 富文本編輯器 -->
-					<i class="bi bi-pencil-fill"></i><label for="description" class="ms-1">內文</label>
+					<i class="bi bi-pencil-fill"></i><label for="ArticalContent" class="ms-1">內文</label>
 
-					<textarea id="editor" class="editor" name="description" placeholder="請輸入正文"></textarea>
+					<textarea id="editor" class="editor" name="ArticalContent" placeholder="請輸入正文">@Model.ArticalContent</textarea>
 				</div>
 
 				<div class="form-group mb-4">
@@ -287,7 +289,7 @@
 			let minutes = now.getMinutes();
 			let seconds = now.getSeconds();
 			let currentTime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
-			document.getElementById('current-time').textContent =currentTime;
+			document.getElementById('current-time').textContent = currentTime;
 		}
 	</script>
 	@* <script src="~/js/post.js"></script> *@
@@ -296,3 +298,4 @@
 </body>
 
 </html>
+
