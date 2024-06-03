@@ -5,8 +5,6 @@ namespace DenGame.Models;
 
 public partial class UserProfile
 {
-    public int ProfileId { get; set; }
-
     public int UserId { get; set; }
 
     public string FirstName { get; set; } = null!;

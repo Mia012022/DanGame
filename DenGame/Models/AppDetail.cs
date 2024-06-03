@@ -33,7 +33,7 @@ public partial class AppDetail
 
     public string Platform { get; set; } = null!;
 
-    public string SourceFile { get; set; } = null!;
+    public int Downloaded { get; set; }
 
     public virtual App App { get; set; } = null!;
 }

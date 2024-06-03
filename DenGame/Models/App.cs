@@ -15,6 +15,8 @@ public partial class App
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
+    public virtual ICollection<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
+
     public virtual ICollection<App> Apps { get; set; } = new List<App>();
 
     public virtual ICollection<App> Dlcapps { get; set; } = new List<App>();

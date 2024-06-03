@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DenGame.Models;
 
-public partial class OrderItem
+public partial class ShoppingCart
 {
-    public int OrderId { get; set; }
+    public int UserId { get; set; }
 
     public int AppId { get; set; }
 
-    public int Price { get; set; }
+    public DateTime AddedTime { get; set; }
 
     public virtual App App { get; set; } = null!;
 
-    public virtual Order Order { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

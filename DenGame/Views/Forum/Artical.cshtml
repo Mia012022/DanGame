@@ -14,8 +14,8 @@
 <style>
 	img {
 		max-width: 100%;
-		max-height:500px;
-		object-fit:cover;
+		max-height: 500px;
+		object-fit: cover;
 	}
 
 	a {
@@ -47,7 +47,7 @@
 				</div>
 
 				<div>
-				@Html.Raw(Model.ArticalContent)
+					@Html.Raw(Model.ArticalContent)
 				</div>
 				<!-- 按讚 -->
 				<div class="mb-2">
@@ -57,22 +57,23 @@
 				<!-- 留言 -->
 
 				<div class="mb-4">
-					<div class="input-group mb-4">
-						<i class="bi bi-chat-left-text input-group-text"></i>
-						<input id="input-box" type="text" class="form-control" placeholder="快來發表你的評論吧">
-						<button id="emoji-button" class="btn btn-outline-secondary"><i class="bi bi-emoji-smile  "></i></button>
+					<form asp-action="AddComment" asp-controller="Forum" method="post">
+						<div class="input-group mb-4">
+							<i class="bi bi-chat-left-text input-group-text"></i>
+							<input id="input-box" type="text" class="form-control" placeholder="快來發表你的評論吧">
+							<button id="emoji-button" class="btn btn-outline-secondary input-group-text"><i class="bi bi-emoji-smile  "></i></button>
 
-						<button class="btn btn-outline-secondary">發送</button>
-						<div id="emoji-picker">
-							<span class="emoji">😊</span>
-							<span class="emoji">😂</span>
-							<span class="emoji">😍</span>
-							<span class="emoji">😢</span>
-							<span class="emoji">😎</span>
-							<span class="emoji">🤔</span>
+							<button type="submit" class="btn btn-outline-secondary input-group-text">發送</button>
+							<div id="emoji-picker">
+								<span class="emoji">😊</span>
+								<span class="emoji">😂</span>
+								<span class="emoji">😍</span>
+								<span class="emoji">😢</span>
+								<span class="emoji">😎</span>
+								<span class="emoji">🤔</span>
+							</div>
 						</div>
-					</div>
-					
+					</form>
 				</div>
 
 				<!-- 評論區 -->
@@ -94,31 +95,18 @@
 
 							</div>
 						</div>
-					</div>
-
-				</div>
-				<!-- 評論區 -->
-				<div class="d-flex mb-2">
-					<div>
-						<img class="rounded-circle" style="width: 40px;"
-							 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/f4efe713c781520252e45c7884261397_2163598826624321026.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
-						</img>
-					</div>
-					<!--  -->
-					<div class="ms-2 userComment">
-						<span class="text-primary">無名客夢</span>
-						<span>【原神】參與「碎片拾憶」活動！這是我的召回碼，快來綁定吧~ GDSYBAL52K</span>
-						<div class="text-secondary" style="font-size: x-small;">
-							<span class="ms-1">5小時前</span>
-							<span class="ms-3"><button class="reply">回覆</button></span>
-							<div class="btn-group btn-group-sm">
-								<button class="btn "><i class="bi bi-hand-thumbs-up"></i></button>
-
-							</div>
+						<div class="input-group mb-4 replyInput" style="display:none;">
+							<form asp-action="AddReply" asp-controller="Forum" method="post">
+							<input type="text" class="form-control" placeholder="快來發表你的評論吧">
+							<button class="btn btn-outline-secondary"><i class="bi bi-emoji-smile  "></i></button></i >
+							<button type="submit" class="btn btn-outline-secondary">發送</button>
+							</form>
 						</div>
 					</div>
 
 				</div>
+				<!-- 評論區 -->
+				
 
 			</div>
 
@@ -161,7 +149,21 @@
 				$(this).replaceWith('<iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 			}
 		});
+
+		$(".reply").click(function () {
+			$(".replyInput").toggle();
+		});
+
+		var num = 0;
+		$('#btnArticalLike').on('click', function () {
+
+			num++;
+
+			$('#likeNumber').html(num);
+
+		})
 	});
+
 </script>
 <script>
 	document.addEventListener('DOMContentLoaded', () => {

@@ -18,14 +18,13 @@ public partial class ArticleList
 
     public byte[] ArticalCoverPhoto { get; set; } = null!;
 
+    public string? ArticleCategory { get; set; }
+
     public virtual ICollection<ArticalComment> ArticalComments { get; set; } = new List<ArticalComment>();
 
     public virtual ICollection<ArticalLike> ArticalLikes { get; set; } = new List<ArticalLike>();
 
-    public virtual ICollection<ArticalView> ArticalViews { get; set; } = new List<ArticalView>();
-
     public virtual User User { get; set; } = null!;
-
-	[NotMapped]
-	public IFormFile? File { get; set; }
+    [NotMapped]
+    public IFormFile File { get; set; }=null!;
 }

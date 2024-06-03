@@ -11,11 +11,13 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
+    public string Status { get; set; } = null!;
+
     public string Email { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime UpdateAt { get; set; }
 
     public virtual ICollection<ArticalCommentLike> ArticalCommentLikes { get; set; } = new List<ArticalCommentLike>();
 
@@ -29,11 +31,21 @@ public partial class User
 
     public virtual ICollection<ArticleList> ArticleLists { get; set; } = new List<ArticleList>();
 
-    public virtual ICollection<FriendList> FriendLists { get; set; } = new List<FriendList>();
+    public virtual ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
+
+    public virtual ICollection<ChatRoomMember> ChatRoomMembers { get; set; } = new List<ChatRoomMember>();
+
+    public virtual ICollection<CreditCardInfo> CreditCardInfos { get; set; } = new List<CreditCardInfo>();
+
+    public virtual ICollection<Friendship> FriendshipFriendUsers { get; set; } = new List<Friendship>();
+
+    public virtual ICollection<Friendship> FriendshipUsers { get; set; } = new List<Friendship>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
+    public virtual ICollection<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
+
     public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 
-    public virtual ICollection<UserProfile> UserProfiles { get; set; } = new List<UserProfile>();
+    public virtual UserProfile? UserProfile { get; set; }
 }
