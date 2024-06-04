@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using X.PagedList.Mvc.Core;
 using X.PagedList;
 using Microsoft.Extensions.Hosting;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using System.IO;
 namespace DenGame.Controllers
 {
 	public class ForumController : Controller
@@ -35,13 +37,31 @@ namespace DenGame.Controllers
 			{
 				return NotFound();
 			}
-			var articallist = await _context.ArticleLists
+			var artical = await _context.ArticleLists
+				.Include(a => a.ArticalComments)
+				.ThenInclude(c => c.User)
+				.Include(a => a.ArticalComments)
+					.ThenInclude(c => c.ArticalCommentReplies)
+				.Include(a => a.ArticalComments)
+					.ThenInclude(c => c.ArticalCommentLikes)
 				.FirstOrDefaultAsync(x => x.ArticalId == id);
-			if (articallist == null)
+			if (artical == null)
 			{
 				return NotFound();
 			}
-			return View(articallist);
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == artical.UserId);
+			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == artical.UserId);	
+			var likes = await _context.ArticalLikes.Where(l => l.ArticalId == id).ToListAsync();
+			var views = await _context.ArticalViews.Where(v => v.ArticalId == id).ToListAsync();
+			var commentLikes = await _context.ArticalCommentLikes
+				.Where(cl => artical.ArticalComments.Select(c => c.CommentId).Contains(cl.CommentId))
+				.ToListAsync();
+			
+			var viewModel = new ArticlePageViewModel
+			{
+
+			};
+			return View(artical);
 		}
 		public async Task<IActionResult> ForumUser()
 		{
@@ -155,10 +175,41 @@ namespace DenGame.Controllers
 		[HttpPost]
 		public IActionResult Delete(int ArticalId)
 		{
+			
 			var article = _context.ArticleLists.Find(ArticalId);
-			_context.ArticleLists.Remove(article);
+			if (article == null)
+			{
+				return NotFound();
+			}
+				_context.ArticleLists.Remove(article);
 			_context.SaveChanges();
 			return Redirect("/Forum/ForumUser");
+		}
+		[HttpGet]
+		public IActionResult AddComment()
+		{
+			return View();
+		}
+		[HttpPost]
+		
+		public async Task<IActionResult> AddComment( string comment)
+		{
+			if (ModelState.IsValid)
+			{
+				var newComment = new ArticalComment
+				{
+					UserId = 3,
+					ArticalId = 10001,
+					CommentContent = comment,
+					CommentCreateDate = DateTime.Now
+				};
+				
+				_context.ArticalComments.Add(newComment);
+				await _context.SaveChangesAsync();
+				
+			}
+
+			return RedirectToAction("Index");
 		}
 	}
 }

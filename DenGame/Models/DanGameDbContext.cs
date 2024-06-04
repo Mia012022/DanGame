@@ -171,7 +171,9 @@ public partial class DanGameDbContext : DbContext
             entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.ArticalId).HasColumnName("ArticalID");
             entity.Property(e => e.CommentContent).HasMaxLength(100);
-            entity.Property(e => e.CommentCreateDate).HasColumnType("datetime");
+            entity.Property(e => e.CommentCreateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.Artical).WithMany(p => p.ArticalComments)
@@ -182,7 +184,7 @@ public partial class DanGameDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.ArticalComments)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Comment_User");
+                .HasConstraintName("FK_ArticalComment_User");
         });
 
         modelBuilder.Entity<ArticalCommentLike>(entity =>
@@ -212,9 +214,7 @@ public partial class DanGameDbContext : DbContext
 
             entity.ToTable("ArticalCommentReply");
 
-            entity.Property(e => e.ReplyId)
-                .ValueGeneratedNever()
-                .HasColumnName("ReplyID");
+            entity.Property(e => e.ReplyId).HasColumnName("ReplyID");
             entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
@@ -258,6 +258,11 @@ public partial class DanGameDbContext : DbContext
             entity.Property(e => e.ArticalViewId).HasColumnName("ArticalViewID");
             entity.Property(e => e.ArticalId).HasColumnName("ArticalID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Artical).WithMany(p => p.ArticalViews)
+                .HasForeignKey(d => d.ArticalId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ArticalView_ArticleList");
 
             entity.HasOne(d => d.User).WithMany(p => p.ArticalViews)
                 .HasForeignKey(d => d.UserId)

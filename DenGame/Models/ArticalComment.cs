@@ -11,7 +11,6 @@ public partial class ArticalComment
 
     public int UserId { get; set; }
 
-
     public string CommentContent { get; set; } = null!;
 
     public DateTime CommentCreateDate { get; set; }
