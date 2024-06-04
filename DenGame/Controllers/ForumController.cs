@@ -23,9 +23,14 @@ namespace DenGame.Controllers
 		public async Task<IActionResult> Index(int? page)
 		{
 			int pageNumber = (page ?? 1);
-			var artical = _context.ArticleLists.OrderBy(c => c.ArticalId).ToPagedList(pageNumber, pageSize);
+			var article = _context.ArticleLists.OrderBy(c => c.ArticalId).ToPagedList(pageNumber, pageSize);
 			var images = await _context.ArticleLists.ToListAsync();
-			return View(artical);
+
+			var viewModel = new ArticlePageViewModel
+			{
+				
+			};
+			return View(article);
 		}
 		public IActionResult Post()
 		{
@@ -37,31 +42,42 @@ namespace DenGame.Controllers
 			{
 				return NotFound();
 			}
-			var artical = await _context.ArticleLists
+			var article = await _context.ArticleLists
 				.Include(a => a.ArticalComments)
 				.ThenInclude(c => c.User)
+				.ThenInclude(c => c.UserProfile)
 				.Include(a => a.ArticalComments)
 					.ThenInclude(c => c.ArticalCommentReplies)
+					.ThenInclude(c => c.User)
+					.ThenInclude(c => c.UserProfile)
 				.Include(a => a.ArticalComments)
 					.ThenInclude(c => c.ArticalCommentLikes)
+				.Include(a => a.ArticalComments)	
 				.FirstOrDefaultAsync(x => x.ArticalId == id);
-			if (artical == null)
+			if (article == null)
 			{
 				return NotFound();
 			}
-			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == artical.UserId);
-			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == artical.UserId);	
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == article.UserId);
+			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == article.UserId);	
 			var likes = await _context.ArticalLikes.Where(l => l.ArticalId == id).ToListAsync();
 			var views = await _context.ArticalViews.Where(v => v.ArticalId == id).ToListAsync();
 			var commentLikes = await _context.ArticalCommentLikes
-				.Where(cl => artical.ArticalComments.Select(c => c.CommentId).Contains(cl.CommentId))
+				.Where(cl => article.ArticalComments.Select(c => c.CommentId).Contains(cl.CommentId))
 				.ToListAsync();
 			
 			var viewModel = new ArticlePageViewModel
 			{
-
+				Article = article,
+				User	= user ,
+				UserProfile = userProfile,
+				Likes = likes,
+				Comments = article.ArticalComments.ToList(),
+				Replies = article.ArticalComments.SelectMany(c => c.ArticalCommentReplies).ToList(),
+				CommentLikes = commentLikes,
+				Views = views
 			};
-			return View(artical);
+			return View(viewModel);
 		}
 		public async Task<IActionResult> ForumUser()
 		{
@@ -83,7 +99,7 @@ namespace DenGame.Controllers
 					await file.CopyToAsync(memoryStream);
 					var artical = new ArticleList
 					{
-						UserId = 1,
+						UserId = 5,
 						ArticalCoverPhoto = memoryStream.ToArray(),
 						ArticalTitle = title,
 						ArticalContent = description
@@ -192,14 +208,14 @@ namespace DenGame.Controllers
 		}
 		[HttpPost]
 		
-		public async Task<IActionResult> AddComment( string comment)
+		public async Task<IActionResult> AddComment( string comment,int articalId)
 		{
 			if (ModelState.IsValid)
 			{
 				var newComment = new ArticalComment
 				{
 					UserId = 3,
-					ArticalId = 10001,
+					ArticalId = articalId,
 					CommentContent = comment,
 					CommentCreateDate = DateTime.Now
 				};

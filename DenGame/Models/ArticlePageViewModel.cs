@@ -3,7 +3,7 @@
 	public class ArticlePageViewModel
 	{
 		public User User { get; set; }
-		public UserProfile Profile { get; set; }
+		public UserProfile UserProfile { get; set; }
 		public ArticleList Article { get; set; }
 		public List<ArticalComment> Comments { get; set; }
 		public List<ArticalCommentReply> Replies { get; set; }
