@@ -20,22 +20,25 @@ namespace DenGame.Controllers
 			_logger = logger;
 			_context = context;
 		}
+		//---------------論壇首頁 有做分頁-------------
 		public async Task<IActionResult> Index(int? page)
 		{
 			int pageNumber = (page ?? 1);
 			var article = _context.ArticleLists.OrderBy(c => c.ArticalId).ToPagedList(pageNumber, pageSize);
 			var images = await _context.ArticleLists.ToListAsync();
 
-			var viewModel = new ArticlePageViewModel
+			var viewModel = new PageListViewModel
 			{
-				
+				ArticleList = article
 			};
-			return View(article);
+			return View(viewModel);
 		}
+		//----------------快來發文吧------------------
 		public IActionResult Post()
 		{
 			return View();
 		}
+		//-----------------文章細節---------------------
 		public async Task<IActionResult> Artical(int? id)
 		{
 			if (id == null)
@@ -79,6 +82,7 @@ namespace DenGame.Controllers
 			};
 			return View(viewModel);
 		}
+		//------------------個人主頁---------------------
 		public async Task<IActionResult> ForumUser(int id)
 		{
 			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
@@ -108,6 +112,8 @@ namespace DenGame.Controllers
 
 			return View(viewModel);
 		}
+		
+		//------------------發表上傳文章-----------------
 		[HttpGet]
 		public IActionResult Upload()
 		{
@@ -139,6 +145,7 @@ namespace DenGame.Controllers
 
 			return View();
 		}
+		//-----------------ckeditor5上傳照片--------------
 		[HttpGet]
 		public IActionResult UploadImage()
 		{
@@ -158,6 +165,7 @@ namespace DenGame.Controllers
 			return Json(new { url = filepath });
 		}
 
+		//------------------編輯文章-------------------
 		public IActionResult Edit(int id)
 		{
 			var edit = _context.ArticleLists.Find(id);
@@ -207,13 +215,15 @@ namespace DenGame.Controllers
 				return RedirectToAction("ForumUser");
 			
 		}
-		public IActionResult Delete(int? id)
+		//-------------------刪除文章頁面-------------------------
+		public IActionResult DeleteArticle(int? id)
 		{
 			var article = _context.ArticleLists.Find(id);
 			return View(article);
 		}
 		[HttpPost]
-		public IActionResult Delete(int ArticalId)
+		//-------------------刪除文章---------------------------
+		public IActionResult DeleteArticle(int ArticalId)
 		{
 			
 			var article = _context.ArticleLists.Find(ArticalId);
@@ -225,20 +235,16 @@ namespace DenGame.Controllers
 			_context.SaveChanges();
 			return Redirect("/Forum/ForumUser");
 		}
-		[HttpGet]
-		public IActionResult AddComment()
-		{
-			return View();
-		}
-		[HttpPost]
 		
+		//-------------------留言------------------------------
+		[HttpPost]
 		public async Task<IActionResult> AddComment( string comment,int articalId)
 		{
 			if (ModelState.IsValid)
 			{
 				var newComment = new ArticalComment
 				{
-					UserId = 3,
+					UserId = 2,
 					ArticalId = articalId,
 					CommentContent = comment,
 					CommentCreateDate = DateTime.Now

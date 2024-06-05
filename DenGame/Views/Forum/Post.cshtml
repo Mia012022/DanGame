@@ -17,9 +17,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
-
+<style>
+	body{
+		background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('../img/purple.png') no-repeat 0% 20%/ cover;
+	}
+</style>
 <body>
-	<div class="shadow border border-1 rounded w-75 m-auto mt-2">
+	<div class="shadow border border-1 rounded w-75 m-auto mt-2 bg-white bg-opacity-75">
 		<form class="m-2" asp-action="Upload" asp-controller="Forum" method="post" enctype="multipart/form-data">
 			<h3 class="border-bottom p-2">發文</h3>
 			<div class="form-row">

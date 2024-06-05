@@ -1,10 +1,11 @@
 ﻿@* @model IEnumerable<DenGame.Models.ArticleList> *@
-	@model IPagedList<DenGame.Models.ArticleList>
+	@model DenGame.Models.PageListViewModel
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
 @{
 	ViewData["Title"] = "Index";
 	var parser = new DenGame.Helpers.HtmlParser();
+	
 
 }
 <head>
@@ -43,7 +44,7 @@
 			<div class="m-1 w-100   rounded">
 				<div class="p-1">
 					<div class="d-flex justify-content-around w-25 m-auto">
-						@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+						@Html.PagedListPager(Model.ArticleList, page => Url.Action("Index", new { page }))
 
 					</div>
 					<a href="" class="btn btn-outline-secondary">全部主題</a>
@@ -64,7 +65,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var item in Model)
+						@foreach (var item in Model.ArticleList)
 						{
 							var concatenatedContent = parser.ConcatenateParagraphContents(item.ArticalContent);
 							<tr>
@@ -75,7 +76,7 @@
 									<a asp-action="Artical" asp-route-id="@item.ArticalId" class="d-flex text-decoration-none">
 										<div>
 											<img src="data:image;base64,@Convert.ToBase64String(item.ArticalCoverPhoto)"
-												 alt="" style="width: 150px;height: 90px; object-fit: cover;">
+												 alt="" style="width:150px;height: 90px; object-fit: cover;" class="rounded">
 										</div>
 
 										<div class="imglist-text">
