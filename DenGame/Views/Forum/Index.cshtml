@@ -5,22 +5,22 @@
 @{
 	ViewData["Title"] = "Index";
 	var parser = new DenGame.Helpers.HtmlParser();
-	
+
 }
 <head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="~/css/forumIndex.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/PagedList.css" asp-append-version="true" />
-<script src="https://kit.fontawesome.com/b5dde33e16.js" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-	  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://kit.fontawesome.com/b5dde33e16.js" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <style>
-	body{
+	body {
 		/* background-color: rgba(0, 0, 0, 0.1);
-		background-blend-mode: multiply;
-		background-image: url();
-		background-size: cover; */
+			background-blend-mode: multiply;
+			background-image: url();
+			background-size: cover; */
 		background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('../img/purple.png') no-repeat 0% 20%/ cover;
 	}
 
@@ -42,22 +42,25 @@
 		<div class="d-flex">
 			<div class="m-1 w-100   rounded">
 				<div class="p-1">
-					<div class="d-flex justify-content-around w-25 m-auto" >
+					<div class="d-flex justify-content-around w-25 m-auto">
 						@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-						
+
 					</div>
-					<a href="" class="btn btn-outline-secondary">New</a>
-					<a href="" class="btn btn-outline-secondary">Hot</a>
+					<a href="" class="btn btn-outline-secondary">全部主題</a>
+					<a href="" class="btn btn-outline-secondary">綜合討論</a>
+					<a href="" class="btn btn-outline-secondary">資訊快報</a>
+					<a href="" class="btn btn-outline-secondary">心得攻略</a>
+					<a href="" class="btn btn-outline-secondary">實況專區</a>
 				</div>
 
 				<table class="table table-striped table-Info table-hover shadow bg-light bg-gradient">
 					<thead>
 						<tr class="text-white purple-cl">
-							<th scope="col">#</th>
+							<th scope="col"></th>
 							<th scope="col">文章列表</th>
-							<th scope="col"><div class="d-flex justify-content-center"><i class="bi bi-eye"></i></div></th>
-							<th scope="col"><div class="d-flex justify-content-center"><i class="bi bi-chat-left"></i></div></th>
-							<th scope="col"><div class="d-flex justify-content-center"><i class="bi bi-calendar"></i></div></th>
+							<th scope="col"><div class="d-flex justify-content-center">@* <i class="bi bi-eye"></i> *@</div></th>
+							<th scope="col"><div class="d-flex justify-content-center">@* <i class="bi bi-chat-left"></i> *@</div></th>
+							<th scope="col"><div class="d-flex justify-content-center">@* <i class="bi bi-calendar"></i> *@</div></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,7 +69,7 @@
 							var concatenatedContent = parser.ConcatenateParagraphContents(item.ArticalContent);
 							<tr>
 								<th scope="col" class="align-middle">
-									<div class="d-flex justify-content-center text-muted">1</div>
+									<div class="d-flex justify-content-center text-muted">@item.ArticleCategory</div>
 								</th>
 								<td class="title align-middle">
 									<a asp-action="Artical" asp-route-id="@item.ArticalId" class="d-flex text-decoration-none">
@@ -84,10 +87,10 @@
 									</a>
 								</td>
 								<td class="align-middle " style=" font-size:x-small">
-									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>1000</span></div></div>
+									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>10</span></div></div>
 								</td>
 								<td class="align-middle" style="font-size:x-small">
-									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>500</span></div></div>
+									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>5</span></div></div>
 								</td>
 								<td class="align-middle" style=" font-size:x-small">
 									<div class="d-flex justify-content-center text-muted"> <div>@item.ArticalCreateDate</div> </div>
@@ -98,7 +101,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="m-1 p-1" >
+			<div class="m-1 p-1">
 				<div class="p-3 rounded">
 					<div class="input-group">
 						<input type="search" class="w-75 form-control" placeholder="搜尋文章">
@@ -114,13 +117,33 @@
 				</div>
 				<div class="mt-1  p-3 rounded ">
 					<div class="list-group">
-						<a href="/Forum/ForumUser" class="btn btn-light">個人主頁</a>
+						<a href="/Forum/ForumUser/" class="btn btn-light">個人主頁</a>
 					</div>
-
 				</div>
-
-
-			
+				<div class="mt-1  p-3 rounded ">
+					<div class="card" >
+						<div class="card-header">
+							近期活躍達人
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">An item</li>
+							<li class="list-group-item">A second item</li>
+							<li class="list-group-item">A third item</li>
+						</ul>
+					</div>
+				</div>
+				<div class="mt-1  p-3 rounded ">
+					<div class="card" >
+						<div class="card-header">
+							熱門推薦文章
+						</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">An item</li>
+							<li class="list-group-item">A second item</li>
+							<li class="list-group-item">A third item</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

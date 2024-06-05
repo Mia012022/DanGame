@@ -1,23 +1,31 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model IEnumerable<DenGame.Models.ArticleList>
+@model DenGame.Models.UserArticlesViewModel
 @{
 	ViewData["Title"] = "ForumUser";
 }
 <div class="d-flex mb-3">
 	<div>
-		<img class="rounded-circle" style="width: 70px;"
-			 src="https://upload-os-bbs.hoyolab.com/upload/2024/04/24/d6048f30e1ec7c52013ad5ed41500099_293482052564117040.png?x-oss-process=image%2Fresize%2Cs_600%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_80">
+		<img class="rounded-circle" style="width: 70px;height:70px;object-fit:cover;"
+			 src="@Model.UserProfile.ProfilePictureUrl">
 		</img>
 	</div>
 	<div class="m-3">
-		<span class="text-primary">坂坂悠</span>
+		<span class="text-primary">@Model.User.UserName</span>
 		<div>
-			<span class="text-secondary ">0</span>
+			<span class="text-secondary ">@Model.Articles.Count</span>
 			<span class="text-secondary ">文章</span>
+			<span class="text-secondary ms-2">@Model.Comments.Count</span>
+			<span class="text-secondary ">評論</span>
+			<span class="text-secondary ms-2">@Model.Likes.Count</span>
+			<span class="text-secondary ">收藏</span>
 			<span class="text-secondary ms-2">0</span>
 			<span class="text-secondary ">讚數</span>
+			<span class="text-secondary ms-2">0</span>
+			<span class="text-secondary ">追蹤</span>
+			<span class="text-secondary ms-2">0</span>
+			<span class="text-secondary ">粉絲</span>
 		</div>
 
 	</div>
@@ -40,11 +48,11 @@
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 					@* <div class="row justify-content-center">
-						<img src="https://www.hoyolab.com/_nuxt/img/7ea569b.png" style="width:250px" />
-						<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
+					<img src="https://www.hoyolab.com/_nuxt/img/7ea569b.png" style="width:250px" />
+					<div><p class="text-center">你還沒有已發表的內容喔!</p></div>
 
 					</div> *@
-					@foreach (var item in Model)
+					@foreach (var item in Model.Articles)
 					{
 
 						<div class="row mb-2 mt-2">
@@ -57,29 +65,43 @@
 
 				</div>
 				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-					<div class="row justify-content-center">
-						<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
-						<div><p class="text-center">你還沒有已評論的內容喔!</p></div>
+					@foreach (var comment in Model.Comments)
+					{
+						<div class="row mb-2 mt-2">
+							<div class="col-11 "><a asp-action="Artical" asp-route-id="@comment.ArticalId" class="text-decoration-none"> @Html.DisplayFor(modelItem => comment.CommentContent)</a></div>
 
-					</div>
+							<div class="col-1"><a asp-action="" asp-route-id="@comment.CommentId" class="text-decoration-none">刪除</a></div>
+
+						</div>
+					}
 				</div>
+				@*
+				<div class="row justify-content-center">
+				<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
+				<div><p class="text-center">你還沒有已評論的內容喔!</p></div>
+
+				</div>
+				*@
 				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-					<div class="row justify-content-center">
-						<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
-						<div><p class="text-center">你還沒有已收藏的內容喔!</p></div>
+					@foreach (var articalLike in Model.LikedArticles)
+					{
+						<div class="row mb-2 mt-2">
+							<div class="col-11 "><a asp-action="Artical" asp-route-id="@articalLike.ArticalId" class="text-decoration-none"> @Html.DisplayFor(modelItem => articalLike.ArticalTitle)</a></div>
 
-					</div>
+							<div class="col-1"><a asp-action="" asp-route-id="" class="text-decoration-none">刪除</a></div>
+
+						</div>
+					}
 				</div>
+
+				@* <div class="row justify-content-center">
+				<img src="https://www.hoyolab.com/_nuxt/img/2247615.png" style="width:250px" />
+				<div><p class="text-center">你還沒有已收藏的內容喔!</p></div>
+				</div> *@
+
 			</div>
-
-
-
-
-
 		</div>
-
 	</div>
-
 
 	<!-- 右側 -->
 	<div class="m-1 p-1 w-25">
@@ -90,6 +112,31 @@
 			</div>
 
 		</div>
-
+		<div class="mt-1  p-3 rounded ">
+			
+			<div class="card" style="width: 18rem;">
+				<div class="card-header">
+					誰追蹤你
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">An item</li>
+					<li class="list-group-item">A second item</li>
+					<li class="list-group-item">A third item</li>
+				</ul>
+			</div>
+		</div>
+		<div class="mt-1  p-3 rounded ">
+			
+			<div class="card" style="width: 18rem;">
+				<div class="card-header">
+					我的粉絲
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">An item</li>
+					<li class="list-group-item">A second item</li>
+					<li class="list-group-item">A third item</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 </div>

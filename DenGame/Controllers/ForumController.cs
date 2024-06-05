@@ -13,7 +13,7 @@ namespace DenGame.Controllers
 		private readonly IWebHostEnvironment _env;
 		private readonly ILogger<ForumController> _logger;
 		private readonly DanGameDbContext _context;
-		int pageSize = 3;
+		int pageSize = 5;
 		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger, DanGameDbContext context)
 		{
 			_env = env;
@@ -79,10 +79,34 @@ namespace DenGame.Controllers
 			};
 			return View(viewModel);
 		}
-		public async Task<IActionResult> ForumUser()
+		public async Task<IActionResult> ForumUser(int id)
 		{
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(u => u.UserId == id);
+			var forumuser = await _context.ArticleLists.Where(x => x.UserId == id).ToListAsync();
+			var comment = await _context.ArticalComments.Where(x =>x.UserId == id).ToListAsync();
+			var like = await _context.ArticalLikes.Where(x => x.UserId == id).ToListAsync();
+			var commentlike = await _context.ArticalCommentLikes.Where(x => x.UserId== id).ToListAsync();
+			var likedArticles = await _context.ArticalLikes
+			.Where(like => like.UserId == id)
+			.Select(like => like.Artical)
+			.ToListAsync();
+			if (user == null)
+			{
+				return NotFound();
+			}
+			var viewModel = new UserArticlesViewModel
+			{
+				User = user,
+				UserProfile = userProfile,
+				Articles = forumuser,
+				Likes = like,
+				Comments = comment,
+				CommentLikes= commentlike,
+				LikedArticles= likedArticles
+			};
 
-			return View(await _context.ArticleLists.ToListAsync());
+			return View(viewModel);
 		}
 		[HttpGet]
 		public IActionResult Upload()
@@ -156,7 +180,7 @@ namespace DenGame.Controllers
 				// 更新文章屬性
 				article.ArticalTitle = model.ArticalTitle;
 				article.ArticalContent = model.ArticalContent;
-				article.ArticalCreateDate = DateTime.Now; // 或者根據您的邏輯
+				article.ArticalCreateDate = DateTime.Now; 
 
 				// 處理文件上傳
 				if (model.File != null && model.File.Length > 0)
