@@ -5,7 +5,7 @@
 @{
 	ViewData["Title"] = "Index";
 	var parser = new DenGame.Helpers.HtmlParser();
-	
+
 
 }
 <head>
@@ -19,9 +19,9 @@
 <style>
 	body {
 		/* background-color: rgba(0, 0, 0, 0.1);
-			background-blend-mode: multiply;
-			background-image: url();
-			background-size: cover; */
+				background-blend-mode: multiply;
+				background-image: url();
+				background-size: cover; */
 		background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url('../img/purple.png') no-repeat 0% 20%/ cover;
 	}
 
@@ -88,10 +88,10 @@
 									</a>
 								</td>
 								<td class="align-middle " style=" font-size:x-small">
-									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>10</span></div></div>
+									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-eye me-1"></i><span>@item.ArticalViews.Count</span></div></div>
 								</td>
 								<td class="align-middle" style="font-size:x-small">
-									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>5</span></div></div>
+									<div class="d-flex justify-content-center text-muted"><div><i class="fa-solid fa-message me-1"></i><span>@item.ArticalComments.Count</span></div></div>
 								</td>
 								<td class="align-middle" style=" font-size:x-small">
 									<div class="d-flex justify-content-center text-muted"> <div>@item.ArticalCreateDate</div> </div>
@@ -122,19 +122,32 @@
 					</div>
 				</div>
 				<div class="mt-1  p-3 rounded ">
-					<div class="card" >
+					<div class="card">
 						<div class="card-header">
 							近期活躍達人
 						</div>
 						<ul class="list-group list-group-flush">
-							<li class="list-group-item">An item</li>
-							<li class="list-group-item">A second item</li>
-							<li class="list-group-item">A third item</li>
+							@foreach (var user in Model.TopUsers)
+							{
+								<li class="list-group-item">
+									<a asp-action="ForumUser" asp-controller="Forum" asp-route-id="@user.UserId">
+										<img class="rounded-circle" style="width:50px;height:50px;object-fit:cover;" src="@Url.Content(user.ProfilePictureUrl)">
+
+										<span>
+											@user.UserName
+										</span>
+
+									</a>
+								</li>
+							}
+
+							@* 	<li class="list-group-item">A second item</li>
+							<li class="list-group-item">A third item</li> *@
 						</ul>
 					</div>
 				</div>
 				<div class="mt-1  p-3 rounded ">
-					<div class="card" >
+					<div class="card">
 						<div class="card-header">
 							熱門推薦文章
 						</div>

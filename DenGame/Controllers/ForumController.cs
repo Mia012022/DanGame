@@ -24,12 +24,32 @@ namespace DenGame.Controllers
 		public async Task<IActionResult> Index(int? page)
 		{
 			int pageNumber = (page ?? 1);
-			var article = _context.ArticleLists.OrderBy(c => c.ArticalId).ToPagedList(pageNumber, pageSize);
-			var images = await _context.ArticleLists.ToListAsync();
-
+			var article = _context.ArticleLists
+				.Include(a => a.ArticalComments)
+				.Include(a => a.ArticalViews)
+				.OrderBy(c => c.ArticalId)
+				.ToPagedList(pageNumber, pageSize);
+			// 查询每个用户的文章数量并取前3名
+			var topuser = await _context.ArticleLists
+						.Include(a => a.User)
+							.ThenInclude(u => u.UserProfile)
+						.GroupBy(a => a.User)
+						.Select(g => new TopUserViewModel
+						{
+							UserId = g.Key.UserId,
+							UserName = g.Key.UserName,
+							ArticleCount = g.Count(),
+							ProfilePictureUrl = g.Key.UserProfile.ProfilePictureUrl
+						})
+						.OrderByDescending(u => u.ArticleCount)
+						.Take(3)
+						.ToListAsync();
 			var viewModel = new PageListViewModel
 			{
-				ArticleList = article
+				ArticleList = article,
+				ArticalComments = await _context.ArticalComments.ToListAsync(),
+				ArticalViews = await _context.ArticalViews.ToListAsync(),
+				TopUsers = topuser
 			};
 			return View(viewModel);
 		}
@@ -55,24 +75,24 @@ namespace DenGame.Controllers
 					.ThenInclude(c => c.UserProfile)
 				.Include(a => a.ArticalComments)
 					.ThenInclude(c => c.ArticalCommentLikes)
-				.Include(a => a.ArticalComments)	
+				.Include(a => a.ArticalComments)
 				.FirstOrDefaultAsync(x => x.ArticalId == id);
 			if (article == null)
 			{
 				return NotFound();
 			}
 			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == article.UserId);
-			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == article.UserId);	
+			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == article.UserId);
 			var likes = await _context.ArticalLikes.Where(l => l.ArticalId == id).ToListAsync();
 			var views = await _context.ArticalViews.Where(v => v.ArticalId == id).ToListAsync();
 			var commentLikes = await _context.ArticalCommentLikes
 				.Where(cl => article.ArticalComments.Select(c => c.CommentId).Contains(cl.CommentId))
 				.ToListAsync();
-			
+
 			var viewModel = new ArticlePageViewModel
 			{
 				Article = article,
-				User	= user ,
+				User = user,
 				UserProfile = userProfile,
 				Likes = likes,
 				Comments = article.ArticalComments.ToList(),
@@ -88,9 +108,9 @@ namespace DenGame.Controllers
 			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
 			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(u => u.UserId == id);
 			var forumuser = await _context.ArticleLists.Where(x => x.UserId == id).ToListAsync();
-			var comment = await _context.ArticalComments.Where(x =>x.UserId == id).ToListAsync();
+			var comment = await _context.ArticalComments.Where(x => x.UserId == id).ToListAsync();
 			var like = await _context.ArticalLikes.Where(x => x.UserId == id).ToListAsync();
-			var commentlike = await _context.ArticalCommentLikes.Where(x => x.UserId== id).ToListAsync();
+			var commentlike = await _context.ArticalCommentLikes.Where(x => x.UserId == id).ToListAsync();
 			var likedArticles = await _context.ArticalLikes
 			.Where(like => like.UserId == id)
 			.Select(like => like.Artical)
@@ -106,13 +126,13 @@ namespace DenGame.Controllers
 				Articles = forumuser,
 				Likes = like,
 				Comments = comment,
-				CommentLikes= commentlike,
-				LikedArticles= likedArticles
+				CommentLikes = commentlike,
+				LikedArticles = likedArticles
 			};
 
 			return View(viewModel);
 		}
-		
+
 		//------------------發表上傳文章-----------------
 		[HttpGet]
 		public IActionResult Upload()
@@ -120,7 +140,7 @@ namespace DenGame.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> Upload(IFormFile file, string title, string description,string Category)
+		public async Task<IActionResult> Upload(IFormFile file, string title, string description, string Category)
 		{
 			if (file != null && file.Length > 0)
 			{
@@ -178,42 +198,42 @@ namespace DenGame.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(ArticleList model)
 		{
-			
-				var article = await _context.ArticleLists.FindAsync(model.ArticalId);
-				if (article == null)
-				{
-					return NotFound();
-				}
 
-				// 更新文章屬性
-				article.ArticalTitle = model.ArticalTitle;
-				article.ArticalContent = model.ArticalContent;
-				article.ArticalCreateDate = DateTime.Now; 
+			var article = await _context.ArticleLists.FindAsync(model.ArticalId);
+			if (article == null)
+			{
+				return NotFound();
+			}
 
-				// 處理文件上傳
-				if (model.File != null && model.File.Length > 0)
-				{
-					using (var memoryStream = new MemoryStream())
-					{
-						await model.File.CopyToAsync(memoryStream);
-						article.ArticalCoverPhoto = memoryStream.ToArray();
-					}
-				}
+			// 更新文章屬性
+			article.ArticalTitle = model.ArticalTitle;
+			article.ArticalContent = model.ArticalContent;
+			article.ArticalCreateDate = DateTime.Now;
 
-				try
+			// 處理文件上傳
+			if (model.File != null && model.File.Length > 0)
+			{
+				using (var memoryStream = new MemoryStream())
 				{
-					_context.Update(article);
-					await _context.SaveChangesAsync();
+					await model.File.CopyToAsync(memoryStream);
+					article.ArticalCoverPhoto = memoryStream.ToArray();
 				}
-				catch (Exception ex)
-				{
-					// 捕捉錯誤訊息
-					ModelState.AddModelError("", $"無法保存更改: {ex.Message}");
-					return View(model);
-				}
+			}
 
-				return RedirectToAction("ForumUser");
-			
+			try
+			{
+				_context.Update(article);
+				await _context.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				// 捕捉錯誤訊息
+				ModelState.AddModelError("", $"無法保存更改: {ex.Message}");
+				return View(model);
+			}
+
+			return RedirectToAction("ForumUser");
+
 		}
 		//-------------------刪除文章頁面-------------------------
 		public IActionResult DeleteArticle(int? id)
@@ -225,20 +245,20 @@ namespace DenGame.Controllers
 		//-------------------刪除文章---------------------------
 		public IActionResult DeleteArticle(int ArticalId)
 		{
-			
+
 			var article = _context.ArticleLists.Find(ArticalId);
 			if (article == null)
 			{
 				return NotFound();
 			}
-				_context.ArticleLists.Remove(article);
+			_context.ArticleLists.Remove(article);
 			_context.SaveChanges();
 			return Redirect("/Forum/ForumUser");
 		}
-		
+
 		//-------------------留言------------------------------
 		[HttpPost]
-		public async Task<IActionResult> AddComment( string comment,int articalId)
+		public async Task<IActionResult> AddComment(string comment, int articalId)
 		{
 			if (ModelState.IsValid)
 			{
@@ -249,17 +269,17 @@ namespace DenGame.Controllers
 					CommentContent = comment,
 					CommentCreateDate = DateTime.Now
 				};
-				
+
 				_context.ArticalComments.Add(newComment);
 				await _context.SaveChangesAsync();
-				
+
 			}
 
 			return RedirectToAction("Index");
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddReply(string comment,int commentId)
+		public async Task<IActionResult> AddReply(string comment, int commentId)
 		{
 			if (ModelState.IsValid)
 			{
@@ -270,10 +290,10 @@ namespace DenGame.Controllers
 					ReplyContent = comment,
 					CreatedAt = DateTime.Now
 				};
-				 
+
 				_context.ArticalCommentReplies.Add(replyComment);
 				await _context.SaveChangesAsync();
-				
+
 			}
 			return RedirectToAction("Index");
 		}

@@ -73,6 +73,7 @@
 				<div class="previewSide">
 					<span class="close">&times;</span>
 					<h3 id="previewTitle"></h3>
+					<div> <span id="previewCategory" class="bg-primary m-2 p-1 rounded text-white"></span></div>
 					<hr>
 					<!-- user -->
 					<div class="d-flex mb-3">
@@ -263,9 +264,10 @@
 				var title = $('#textInput').val();
 				var content = $('.editor').val();
 				var image = $('#imageInput')[0].files[0];
+				var category = $('#category').val();
 				$('#previewTitle').text(title);
 				$('#previewContent').html(myEditor.getData());
-
+				$('#previewCategory').text(category);
 				if (image) {
 					var reader = new FileReader();
 					reader.onload = function (e) {
