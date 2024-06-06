@@ -1,9 +1,9 @@
-﻿.reply{
+﻿.reply-button{
     background:white;
     color:gray;
     border:none;
 }
-.reply:hover{
+.reply-button:hover{
     color:dodgerblue;
 }
 

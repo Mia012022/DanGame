@@ -32,16 +32,19 @@
 		<div class="shadow border border-1 rounded w-100 m-auto mt-4 me-3">
 			<div class="m-4 ">
 				<h3>@Model.Article.ArticalTitle</h3>
+				<div> <span class="bg-primary ms-1">@Model.Article.ArticleCategory</span></div>
 				<hr>
 				<!-- user -->
 				<div class="d-flex mb-3">
 					<div>
-						<img class="rounded-circle" style="width:50px;height:50px;object-fit:cover;"
-							 src="@Model.UserProfile.ProfilePictureUrl">
-						</img>
+						<a asp-action="ForumUser" asp-controller="Forum" asp-route-id="@Model.User.UserId">
+							<img class="rounded-circle" style="width:50px;height:50px;object-fit:cover;"
+								 src="@Model.UserProfile.ProfilePictureUrl">
+							</img>
+						</a>
 					</div>
 					<div class="ms-2">
-						<span class="text-primary ">@Model.User.UserName</span>
+						<span class="text-primary "><a asp-action="ForumUser" asp-controller="Forum" asp-route-id="@Model.User.UserId">@Model.User.UserName</a> </span>
 						<p class="text-secondary " style="font-size: x-small;">@Model.Article.ArticalCreateDate</p>
 					</div>
 				</div>
@@ -84,48 +87,64 @@
 				{
 					<div class="d-flex mb-2">
 						<div>
-							<img class="rounded-circle" style="width: 40px;height:40px;object-fit:cover;"
-								 src="@comment.User.UserProfile.ProfilePictureUrl">
-							</img>
+							<a asp-action="ForumUser" asp-controller="Forum" asp-route-id="@comment.User.UserId">
+								<img class="rounded-circle" style="width: 40px;height:40px;object-fit:cover;"
+									 src="@comment.User.UserProfile.ProfilePictureUrl">
+								</img>
+							</a>
 						</div>
 						<!--  -->
 						<div class="userComment ms-2">
-							<span class="text-primary">@comment.User.UserName</span>
+							<span class="text-primary"><a asp-action="ForumUser" asp-controller="Forum" asp-route-id="@comment.User.UserId">@comment.User.UserName</a></span>
 							<span>@comment.CommentContent</span>
 							<div class="text-secondary" style="font-size: x-small;">
 								<span class="ms-1">@comment.CommentCreateDate</span>
-								<span class="ms-3"><button class="reply">回覆</button></span>
-								
-									<div class="btn-group btn-group-sm ">
-										<button class="btn "><i class="bi bi-heart" style="font-size: x-small;"></i><span class=" ms-1" style="font-size: x-small;">@comment.ArticalCommentLikes.Count</span></button>
-									</div>
-								
+								<span class="ms-3"><button class="reply-button" data-comment-id="@comment.CommentId">回覆</button></span>
+
+								<div class="btn-group btn-group-sm ">
+									<button class="btn "><i class="bi bi-heart" style="font-size: x-small;"></i><span class=" ms-1" style="font-size: x-small;">@comment.ArticalCommentLikes.Count</span></button>
+								</div>
+
 							</div>
 							@foreach (var reply in comment.ArticalCommentReplies)
 							{
 								<div class="d-flex mb-2">
 									<div>
-										<img class="rounded-circle" style="width: 40px;height:40px;object-fit:cover;"
-											 src="@reply.User.UserProfile.ProfilePictureUrl">
-										</img>
+										<a asp-action="ForumUser" asp-controller="Forum" asp-route-id="@comment.User.UserId">
+											<img class="rounded-circle" style="width: 40px;height:40px;object-fit:cover;"
+												 src="@reply.User.UserProfile.ProfilePictureUrl">
+											</img>
+										</a>
 									</div>
 									<div class="ms-2">
 										<span class="text-primary">@reply.User.UserName</span>
 										<span>@reply.ReplyContent</span>
 										<div class="text-secondary" style="font-size: x-small;">
 											<span class="ms-1">@reply.CreatedAt</span>
-											<span class="ms-3"><button class="reply">回覆</button></span>
+											<span class="ms-3"><button class="reply-button" data-comment-id="@comment.CommentId" data-reply-id="@reply.ReplyId" data-username="@reply.User.UserName">回覆</button></span>
 											<div class="btn-group btn-group-sm">
 												<button class="btn "><i class="bi bi-heart" style="font-size: x-small;"></i></button>
 
 											</div>
 										</div>
+										<div class="input-group mb-4 reply-form" id="reply-form-reply-@reply.ReplyId" style="display: none;">
+											<form asp-action="AddReply" method="post">
+												<input type="hidden" name="CommentId" value="@comment.CommentId" />
+												<input type="hidden" name="ReplyToUserId" value="@reply.User.UserId" class="reply-to-user-id" />
+												<input type="text" class="form-control reply-content" name="comment" placeholder="快來發表你的評論吧">
+												<div class="input-group-append">
+													<button class="btn btn-outline-secondary emoji-button" type="button"><i class="bi bi-emoji-smile  "></i></button>
+													<button type="submit" class="btn btn-outline-secondary">發送</button>
+												</div>
+											</form>
+										</div>
 									</div>
 								</div>
 							}
 							<form asp-action="AddReply" asp-controller="Forum" method="post" class="comment-form">
-								<div class="input-group mb-4 replyInput" style="display:none;">
-									<input type="text" class="form-control" placeholder="快來發表你的評論吧">
+								<div class="input-group mb-4 reply-form" id="reply-form-@comment.CommentId" style="display:none;">
+									<input type="hidden" name="CommentId" value="@comment.CommentId" />
+									<input type="text" class="form-control" name="comment" placeholder="快來發表你的評論吧">
 									<div class="input-group-append">
 										<button class="btn btn-outline-secondary emoji-button" type="button"><i class="bi bi-emoji-smile  "></i></button>
 										<button type="submit" class="btn btn-outline-secondary">發送</button>
@@ -194,8 +213,23 @@
 			}
 		});
 
-		$(".reply").click(function () {
-			$(".replyInput").toggle();
+		$('.reply-button').on('click', function () {
+			var commentId = $(this).data('comment-id');
+			var replyId = $(this).data('reply-id');
+			var username = $(this).data('username');
+			$('.reply-form').hide(); // 隐藏所有回复表单
+	@* $('#reply-form-' + commentId).show(); // 显示当前评论的回复表单 *@
+			if (replyId) {
+				// 显示当前回复的回复表单
+				$('#reply-form-reply-' + replyId).show();
+				$('#reply-form-reply-' + replyId + ' .reply-to-user-id').val($(this).data('user-id'));
+				$('#reply-form-reply-' + replyId + ' .reply-content').val("#" + username + '# ');
+			} else {
+				// 显示当前评论的回复表单
+				$('#reply-form-' + commentId).show();
+				$('#reply-form-' + commentId + ' .reply-to-user-id').val($(this).data('user-id'));
+	@* $('#reply-form-' + commentId + ' .reply-content').val('@' + username + ' '); *@
+				}
 		});
 
 		var num = 0;

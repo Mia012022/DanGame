@@ -120,7 +120,7 @@ namespace DenGame.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> Upload(IFormFile file, string title, string description)
+		public async Task<IActionResult> Upload(IFormFile file, string title, string description,string Category)
 		{
 			if (file != null && file.Length > 0)
 			{
@@ -132,8 +132,8 @@ namespace DenGame.Controllers
 						UserId = 5,
 						ArticalCoverPhoto = memoryStream.ToArray(),
 						ArticalTitle = title,
-						ArticalContent = description
-
+						ArticalContent = description,
+						ArticleCategory = Category
 					};
 
 					_context.ArticleLists.Add(artical);
@@ -255,6 +255,26 @@ namespace DenGame.Controllers
 				
 			}
 
+			return RedirectToAction("Index");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddReply(string comment,int commentId)
+		{
+			if (ModelState.IsValid)
+			{
+				var replyComment = new ArticalCommentReply
+				{
+					UserId = 3,
+					CommentId = commentId,
+					ReplyContent = comment,
+					CreatedAt = DateTime.Now
+				};
+				 
+				_context.ArticalCommentReplies.Add(replyComment);
+				await _context.SaveChangesAsync();
+				
+			}
 			return RedirectToAction("Index");
 		}
 	}
