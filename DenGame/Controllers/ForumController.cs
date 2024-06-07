@@ -13,7 +13,7 @@ namespace DenGame.Controllers
 		private readonly IWebHostEnvironment _env;
 		private readonly ILogger<ForumController> _logger;
 		private readonly DanGameDbContext _context;
-		int pageSize = 5;
+		
 		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger, DanGameDbContext context)
 		{
 			_env = env;
@@ -21,25 +21,44 @@ namespace DenGame.Controllers
 			_context = context;
 		}
 		//---------------論壇首頁 有做分頁-------------
-		public async Task<IActionResult> Index(int? page)
+		public async Task<IActionResult> Index(string category="全部主題", int page=1)
 		{
-			int pageNumber = (page ?? 1);
+			int pageNumber = page;
+			int pageSize = 5;
+			
 			var article = _context.ArticleLists
 				.Include(a => a.ArticalComments)
 				.Include(a => a.ArticalViews)
 				.OrderBy(c => c.ArticalId)
+				.Where(c => c.ArticleCategory == category || category == "全部主題")
 				.ToPagedList(pageNumber, pageSize);
-			// 查询每个用户的文章数量并取前3名
+			
+
+			var popularArticle = await (from v in _context.ArticalViews
+										join l in _context.ArticleLists on v.ArticalId equals l.ArticalId
+										group new { v, l } by new { v.ArticalId, l.ArticalTitle, l.ArticalContent } into g
+										select new PopularArticleViewModel
+										{
+											ArticalID = g.Key.ArticalId,
+											Amount = g.Count(),
+											ArticalTitle = g.Key.ArticalTitle,
+											ArticalContent = g.Key.ArticalContent
+										})
+			   .OrderByDescending(g => g.Amount)
+			   .Take(3)
+			   .ToListAsync();
+// 查询每个用户的文章数量并取前3名
 			var topuser = await _context.ArticleLists
-						.Include(a => a.User)
-							.ThenInclude(u => u.UserProfile)
 						.GroupBy(a => a.User)
 						.Select(g => new TopUserViewModel
 						{
 							UserId = g.Key.UserId,
 							UserName = g.Key.UserName,
 							ArticleCount = g.Count(),
-							ProfilePictureUrl = g.Key.UserProfile.ProfilePictureUrl
+							ProfilePictureUrl = _context.UserProfiles
+												.Where(profile => profile.UserId == g.Key.UserId)
+												.Select(profile => profile.ProfilePictureUrl)
+												.FirstOrDefault()
 						})
 						.OrderByDescending(u => u.ArticleCount)
 						.Take(3)
@@ -49,7 +68,8 @@ namespace DenGame.Controllers
 				ArticleList = article,
 				ArticalComments = await _context.ArticalComments.ToListAsync(),
 				ArticalViews = await _context.ArticalViews.ToListAsync(),
-				TopUsers = topuser
+				TopUsers = topuser,
+				PopularArticle = popularArticle
 			};
 			return View(viewModel);
 		}
@@ -278,6 +298,7 @@ namespace DenGame.Controllers
 			return RedirectToAction("Index");
 		}
 
+		//-------------------回覆------------------------------
 		[HttpPost]
 		public async Task<IActionResult> AddReply(string comment, int commentId)
 		{
@@ -296,6 +317,15 @@ namespace DenGame.Controllers
 
 			}
 			return RedirectToAction("Index");
+		}
+
+		//----------------------搜尋文章-------------------
+		public IActionResult Search(string searchTerm)
+		{
+			var articles = _context.ArticleLists
+				.Where(a => a.ArticalTitle.Contains(searchTerm) || a.ArticalContent.Contains(searchTerm))
+				.ToList();
+			return View(articles);
 		}
 	}
 }
