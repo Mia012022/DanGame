@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link rel="stylesheet" href="~/css/forumIndex.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/PagedList.css" asp-append-version="true" />
+	<script src="~/js/jquery-dateformat.min.js"></script>
 	<script src="https://kit.fontawesome.com/b5dde33e16.js" crossorigin="anonymous"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -103,7 +104,7 @@
 									// DateTime dateTime = DateTime.Parse(dateTimeStr);
 								}
 								<td class="align-middle" style=" font-size:x-small; white-space: pre-line;">
-									<div class="d-flex justify-content-center text-muted"> <div >@item.ArticalCreateDate</div> </div>
+									<div class="d-flex justify-content-center text-muted"> <div class="ArticalCreateDate" timestramp="@(((DateTimeOffset)item.ArticalCreateDate).ToUnixTimeSeconds()*1000)"></div> </div>
 								</td>
 							</tr>
 						}
@@ -203,6 +204,10 @@
 					$(this).replaceWith('<iframe width="560" height="315" src="' + embedUrl + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
 				}
 			});
+			$(".ArticalCreateDate").each(function () {
+				let time = new Date(Number($(this).attr("timestramp")));
+				$(this).html(DateFormat.format.prettyDate(time));
+			})
 		});
 
 		// 取得所有具有 editTime class 的元素

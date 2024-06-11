@@ -13,7 +13,7 @@ namespace DenGame.Controllers
 		private readonly IWebHostEnvironment _env;
 		private readonly ILogger<ForumController> _logger;
 		private readonly DanGameDbContext _context;
-		
+
 		public ForumController(IWebHostEnvironment env, ILogger<ForumController> logger, DanGameDbContext context)
 		{
 			_env = env;
@@ -21,18 +21,18 @@ namespace DenGame.Controllers
 			_context = context;
 		}
 		//---------------論壇首頁 有做分頁-------------
-		public async Task<IActionResult> Index(string category="全部主題", int page=1)
+		public async Task<IActionResult> Index(string category = "全部主題", int page = 1)
 		{
 			int pageNumber = page;
 			int pageSize = 5;
-			
-			var article = _context.ArticleLists
-				.Include(a => a.ArticalComments)
-				.Include(a => a.ArticalViews)
-				.OrderBy(c => c.ArticalId)
-				.Where(c => c.ArticleCategory == category || category == "全部主題")
-				.ToPagedList(pageNumber, pageSize);
-			
+
+			var article = (from a in _context.ArticleLists
+						   where a.ArticleCategory == category || category == "全部主題"
+						   orderby a.ArticalId descending
+						   select a)
+						   .Include(a => a.ArticalComments)
+						   .Include(a => a.ArticalViews)
+						   .ToPagedList(pageNumber, pageSize);
 
 			var popularArticle = await (from v in _context.ArticalViews
 										join l in _context.ArticleLists on v.ArticalId equals l.ArticalId
@@ -44,25 +44,24 @@ namespace DenGame.Controllers
 											ArticalTitle = g.Key.ArticalTitle,
 											ArticalContent = g.Key.ArticalContent
 										})
-			   .OrderByDescending(g => g.Amount)
-			   .Take(3)
-			   .ToListAsync();
-// 查询每个用户的文章数量并取前3名
-			var topuser = await _context.ArticleLists
-						.GroupBy(a => a.User)
-						.Select(g => new TopUserViewModel
-						{
-							UserId = g.Key.UserId,
-							UserName = g.Key.UserName,
-							ArticleCount = g.Count(),
-							ProfilePictureUrl = _context.UserProfiles
-												.Where(profile => profile.UserId == g.Key.UserId)
-												.Select(profile => profile.ProfilePictureUrl)
-												.FirstOrDefault()
-						})
-						.OrderByDescending(u => u.ArticleCount)
-						.Take(3)
-						.ToListAsync();
+									   .OrderByDescending(g => g.Amount)
+									   .Take(3)
+									   .ToListAsync();
+			// 查询每个用户的文章数量并取前3名
+			var topuser = await (from a in _context.ArticleLists
+								 group a by a.User into g
+								 select new TopUserViewModel
+								 {
+									 UserId = g.Key.UserId,
+									 UserName = g.Key.UserName,
+									 ArticleCount = g.Count(),
+									 ProfilePictureUrl = (from profile in _context.UserProfiles
+														  where profile.UserId == g.Key.UserId
+														  select profile.ProfilePictureUrl).FirstOrDefault()
+								 })
+								.OrderByDescending(u => u.ArticleCount)
+								.Take(3)
+								.ToListAsync();
 			var viewModel = new PageListViewModel
 			{
 				ArticleList = article,
@@ -85,29 +84,38 @@ namespace DenGame.Controllers
 			{
 				return NotFound();
 			}
-			var article = await _context.ArticleLists
-				.Include(a => a.ArticalComments)
-				.ThenInclude(c => c.User)
-				.ThenInclude(c => c.UserProfile)
-				.Include(a => a.ArticalComments)
-					.ThenInclude(c => c.ArticalCommentReplies)
-					.ThenInclude(c => c.User)
-					.ThenInclude(c => c.UserProfile)
-				.Include(a => a.ArticalComments)
-					.ThenInclude(c => c.ArticalCommentLikes)
-				.Include(a => a.ArticalComments)
-				.FirstOrDefaultAsync(x => x.ArticalId == id);
+			var article = await (from a in _context.ArticleLists
+								 where a.ArticalId == id
+								 select a)
+								.Include(a => a.ArticalComments)
+									.ThenInclude(c => c.User)
+									.ThenInclude(u => u.UserProfile)
+								.Include(a => a.ArticalComments)
+									.ThenInclude(c => c.ArticalCommentReplies)
+									.ThenInclude(r => r.User)
+									.ThenInclude(u => u.UserProfile)
+								.Include(a => a.ArticalComments)
+									.ThenInclude(c => c.ArticalCommentLikes)
+								.FirstOrDefaultAsync();
 			if (article == null)
 			{
 				return NotFound();
 			}
-			var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == article.UserId);
-			var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.UserId == article.UserId);
-			var likes = await _context.ArticalLikes.Where(l => l.ArticalId == id).ToListAsync();
-			var views = await _context.ArticalViews.Where(v => v.ArticalId == id).ToListAsync();
-			var commentLikes = await _context.ArticalCommentLikes
-				.Where(cl => article.ArticalComments.Select(c => c.CommentId).Contains(cl.CommentId))
-				.ToListAsync();
+			var user = await (from u in _context.Users
+							  where u.UserId == article.UserId
+							  select u).FirstOrDefaultAsync();
+			var userProfile = await (from p in _context.UserProfiles
+									 where p.UserId == article.UserId
+									 select p).FirstOrDefaultAsync();
+			var likes = await (from l in _context.ArticalLikes
+							   where l.ArticalId == id
+							   select l).ToListAsync();
+			var views = await (from v in _context.ArticalViews
+							   where v.ArticalId == id
+							   select v).ToListAsync();
+			var commentLikes = await (from cl in _context.ArticalCommentLikes
+									  where article.ArticalComments.Select(c => c.CommentId).Contains(cl.CommentId)
+									  select cl).ToListAsync();
 
 			var viewModel = new ArticlePageViewModel
 			{
